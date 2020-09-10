@@ -7,15 +7,28 @@ export function getWindowTop() {
     return window.scrollY;
 }
 
-export function scrollToElement(id) {
+export function heightCorrectByElement(height, id) {
+    const elementToHeightCorrectBy = document.getElementById(id);
+    return height -= elementToHeightCorrectBy ? elementToHeightCorrectBy.offsetHeight : 0;
+}
+
+export function scrollToElement(id, elementIDToHeightCorrectBy) {
     window.scrollTo({
-        top: getElementTop(id),
+        top: heightCorrectByElement(getElementTop(id), elementIDToHeightCorrectBy),
         behavior: 'smooth',
     });
 }
 
-export function windowAtOrPassedElement(id) {
+export function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+    });
+}
+
+export function windowAtOrPassedElement(id, elementIDToHeightCorrectBy) {
     const windowTop = getWindowTop();
-    const elementTop = getElementTop(id);
+    let elementTop = getElementTop(id);
+    elementTop = heightCorrectByElement(elementTop, elementIDToHeightCorrectBy);
     return (elementTop || elementTop == 0) ? windowTop >= elementTop : false;
 }
