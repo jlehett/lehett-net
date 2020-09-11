@@ -1,10 +1,10 @@
 const express = require('express');
+const http = require('http');
 const app = express();
 const server = http.createServer(app);
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const http = require('http');
 const PORT = 3000;
 
 app.use(cors());
