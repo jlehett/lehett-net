@@ -37,6 +37,7 @@ import NeuroStylePNG from '../../assets/project-backgrounds/neurostyle.png';
 import PotentialFieldPNG from '../../assets/project-backgrounds/potentialfield.png';
 import RayTracingPNG from '../../assets/project-backgrounds/ray-tracing-vis.png';
 import Media from 'react-media';
+import Div100vh from 'react-div-100vh';
 
 export default class HomePage extends Component {
     state = {
@@ -300,10 +301,9 @@ export default class HomePage extends Component {
     render() {
         return (
             <div>
-                <div
+                <Div100vh
                     id='homeSection'
                     className={css(styles.mediaHeaderDiv)}
-                    style={{ height: this.state.windowHeight }}
                 >
                     <div>
                         <P5Wrapper sketch={HeaderMedia}/>
@@ -320,7 +320,7 @@ export default class HomePage extends Component {
                             </Typography>
                         </div>
                     </div>
-                </div>
+                </Div100vh>
                 <Paper className={css(styles.navbar)}>
                     <Toolbar
                         position='static'
