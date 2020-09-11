@@ -13,7 +13,7 @@ export function heightCorrectByElement(height, id) {
 }
 
 export function scrollToElement(id, elementIDToHeightCorrectBy) {
-    window.scrollTo({
+    window.scroll({
         top: heightCorrectByElement(getElementTop(id), elementIDToHeightCorrectBy),
         behavior: 'smooth',
     });
