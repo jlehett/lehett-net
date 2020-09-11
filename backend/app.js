@@ -4,6 +4,7 @@ const app = express();
 const server = http.createServer(app);
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const path = require('path');
 const mongoose = require('mongoose');
 const PORT = 80;
 
