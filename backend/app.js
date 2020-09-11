@@ -10,8 +10,10 @@ const PORT = 80;
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get("/", (req, res) => {
-    res.send("This is from express.js");
+app.use(express.static(path.join(__dirname, '../build')));
+
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
 
 app.listen(PORT, function() {

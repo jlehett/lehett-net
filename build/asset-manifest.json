@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.js": "./static/js/main.fbec7ea4.chunk.js",
+    "main.js.map": "./static/js/main.fbec7ea4.chunk.js.map",
+    "runtime-main.js": "./static/js/runtime-main.974cca23.js",
+    "runtime-main.js.map": "./static/js/runtime-main.974cca23.js.map",
+    "static/css/2.d8dc3702.chunk.css": "./static/css/2.d8dc3702.chunk.css",
+    "static/js/2.0d2da453.chunk.js": "./static/js/2.0d2da453.chunk.js",
+    "static/js/2.0d2da453.chunk.js.map": "./static/js/2.0d2da453.chunk.js.map",
+    "index.html": "./index.html",
+    "precache-manifest.8a859e1fb1e5d2b56ce58772cef8e1e2.js": "./precache-manifest.8a859e1fb1e5d2b56ce58772cef8e1e2.js",
+    "service-worker.js": "./service-worker.js",
+    "static/css/2.d8dc3702.chunk.css.map": "./static/css/2.d8dc3702.chunk.css.map",
+    "static/js/2.0d2da453.chunk.js.LICENSE.txt": "./static/js/2.0d2da453.chunk.js.LICENSE.txt",
+    "static/media/computer-graphics-project.png": "./static/media/computer-graphics-project.02023875.png",
+    "static/media/computer-vision.png": "./static/media/computer-vision.d2314bbd.png",
+    "static/media/neural-smithing.png": "./static/media/neural-smithing.4e18961c.png",
+    "static/media/neurostyle.png": "./static/media/neurostyle.b7ea0a98.png",
+    "static/media/potentialfield.png": "./static/media/potentialfield.bd361d72.png",
+    "static/media/ray-tracing-vis.png": "./static/media/ray-tracing-vis.27483464.png",
+    "static/media/index.css": "./static/media/roboto-vietnamese-400-normal.a8be5b46.woff2"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.974cca23.js",
+    "static/css/2.d8dc3702.chunk.css",
+    "static/js/2.0d2da453.chunk.js",
+    "static/js/main.fbec7ea4.chunk.js"
+  ]
+}
