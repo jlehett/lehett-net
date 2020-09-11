@@ -33,11 +33,21 @@ export default class ProjectItem extends Component {
                     window.location = this.props.href
                 }}
             >
-                <Media queries={{ small: "(max-width: 699px)" }}>
+                <Media queries={{ small: "(max-width: 699px)", verySmall: "(max-width: 499px)" }}>
                     {matches => (
                         <>
                             {
-                                matches.small
+                                matches.verySmall
+                                    ? (
+                                        <img
+                                            src={this.props.backgroundImage}
+                                            className={css(styles.backgroundImage)}
+                                            style={{
+                                                transform: 'translate(' + this.props.translateX + ',' + this.props.translateY + ') scale(' + scaleSmallAdjusted + ')'
+                                            }}
+                                        />
+                                    )
+                                    : matches.small
                                     ? (
                                         <img
                                             src={this.props.backgroundImage}
@@ -61,29 +71,47 @@ export default class ProjectItem extends Component {
                                         />
                                     )
                             }
+                            {
+                                !matches.verySmall
+                                    ? (
+                                        <>
+                                            <div
+                                                className={css(
+                                                    styles.transparentBlackOverlay,
+                                                    this.state.isHovering
+                                                        ? styles.transparentBlackOverlayHovered
+                                                        : styles.transparentBlackOverlayUnhovered
+                                                )}
+                                            />
+                                            <div
+                                                className={css(
+                                                    styles.projectNameDiv,
+                                                    this.state.isHovering
+                                                        ? styles.projectNameDivHovered
+                                                        : styles.projectNameDivUnhovered
+                                                )}
+                                            >
+                                                <Typography variant='body1' className={css(styles.ralewayFont, styles.projectName)}>
+                                                    {this.props.title}
+                                                </Typography>
+                                            </div>
+                                        </>
+                                    )
+                                    : (
+                                        <>
+                                            <div
+                                                className={css(styles.projectNameDiv, styles.projectNameDivHovered)}
+                                            >
+                                                <Typography variant='body1' className={css(styles.ralewayFont, styles.projectName)}>
+                                                    {this.props.title}
+                                                </Typography>
+                                            </div>
+                                        </>
+                                    )
+                            }
                         </>
                     )}
                 </Media>
-                <div
-                    className={css(
-                        styles.transparentBlackOverlay,
-                        this.state.isHovering
-                            ? styles.transparentBlackOverlayHovered
-                            : styles.transparentBlackOverlayUnhovered
-                    )}
-                />
-                <div
-                    className={css(
-                        styles.projectNameDiv,
-                        this.state.isHovering
-                            ? styles.projectNameDivHovered
-                            : styles.projectNameDivUnhovered
-                    )}
-                >
-                    <Typography variant='body1' className={css(styles.ralewayFont, styles.projectName)}>
-                        {this.props.title}
-                    </Typography>
-                </div>
             </div>
         );
     }
@@ -156,6 +184,5 @@ const styles = StyleSheet.create({
         width: 'fit-content',
         height: 'fit-content',
         transition: '0.25s',
-        maskImage: '-webkit-radial-gradient(white, black);'
     }
 });
