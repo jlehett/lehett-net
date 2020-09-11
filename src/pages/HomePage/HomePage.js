@@ -706,8 +706,10 @@ const styles = StyleSheet.create({
         cursor: 'pointer',
         borderRadius: '50%',
         transition: '0.25s',
-        ":hover": {
-            background: 'rgba(255, 255, 255, 0.15)',
+        '@media (hover: hover)': {
+            ":hover": {
+                background: 'rgba(255, 255, 255, 0.15)',
+            }
         }
     },
     projectNote: {
