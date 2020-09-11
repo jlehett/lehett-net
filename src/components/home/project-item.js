@@ -27,6 +27,8 @@ export default class ProjectItem extends Component {
                 className={css(styles.projectContainer)}
                 onMouseEnter={() => this.setHovering(true)}
                 onMouseLeave={() => this.setHovering(false)}
+                onTouchStart={() => this.setHovering(true)}
+                onTouchEnd={() => this.setHovering(false)}
                 onClick={() => {
                     window.location = this.props.href
                 }}
