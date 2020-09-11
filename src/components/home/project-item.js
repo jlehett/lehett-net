@@ -156,5 +156,6 @@ const styles = StyleSheet.create({
         width: 'fit-content',
         height: 'fit-content',
         transition: '0.25s',
+        maskImage: '-webkit-radial-gradient(white, black);'
     }
 });
