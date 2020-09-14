@@ -50,6 +50,7 @@ class HomePage extends Component {
         errorSendingMessage: false,
         errorMessage: '',
         emptyField: false,
+        messageSent: false,
     };
 
     webTechnologies = [
@@ -104,8 +105,14 @@ class HomePage extends Component {
             );
             this.setState({
                 errorSendingMessage: response.error,
-                errorMessage: response.message
+                errorMessage: response.message,
+                messageSent: true,
             });
+            if (!response.error) {
+                document.getElementById('contactName').value = '';
+                document.getElementById('contactEmail').value = '';
+                document.getElementById('contactMessage').value = '';
+            }
         } else {
             this.setState({
                 errorSendingMessage: false,
@@ -572,69 +579,82 @@ class HomePage extends Component {
                             Get in touch with me! I'm eager to hear from you!
                         </Typography>
                     </div>
-                    <div className={css(styles.contactForm)}>
-                        <ContactField
-                            empty={
-                                this.state.emptyField
-                                && this.contactFieldIsEmpty('contactName')
-                            }
-                            onChange={() => {
-                                if (this.state.emptyField) {
-                                    this.setState({
-                                        emptyField: false
-                                    });
-                                }
-                            }}
-                            id='contactName'
-                            variant='outlined'
-                            label='Name'
-                            className={css(styles.contactFormField)}
-                        />
-                        <ContactField
-                            empty={
-                                this.state.emptyField
-                                && this.contactFieldIsEmpty('contactEmail')
-                            }
-                            onChange={() => {
-                                if (this.state.emptyField) {
-                                    this.setState({
-                                        emptyField: false
-                                    });
-                                }
-                            }}
-                            id='contactEmail'
-                            variant='outlined'
-                            label='Email'
-                            className={css(styles.contactFormField)}
-                        />
-                        <ContactField
-                            empty={
-                                this.state.emptyField
-                                && this.contactFieldIsEmpty('contactMessage')
-                            }
-                            onChange={() => {
-                                if (this.state.emptyField) {
-                                    this.setState({
-                                        emptyField: false
-                                    });
-                                }
-                            }}
-                            id='contactMessage'
-                            multiline
-                            rows={4}
-                            variant='outlined'
-                            label='Message'
-                            className={css(styles.contactFormField)}
-                        />
-                        <Button
-                            variant='outlined'
-                            className={css(styles.contactFormField)}
-                            style={{ width: '50%', alignSelf: 'flex-end' }}
-                            onClick={() => this.sendEmail()}
-                        >
-                            Submit
-                        </Button>
-                    </div>
+                    {
+                        this.state.messageSent
+                            ? (
+                                <div className={css(styles.contactMade)}>
+                                    <Typography variant='h6'>
+                                        Your message has been sent.
+                                        Thanks for reaching out!
+                                    </Typography>
+                                </div>
+                            )
+                            : (
+                                <div className={css(styles.contactForm)}>
+                                    <ContactField
+                                        empty={
+                                            this.state.emptyField
+                                            && this.contactFieldIsEmpty('contactName')
+                                        }
+                                        onChange={() => {
+                                            if (this.state.emptyField) {
+                                                this.setState({
+                                                    emptyField: false
+                                                });
+                                            }
+                                        }}
+                                        id='contactName'
+                                        variant='outlined'
+                                        label='Name'
+                                        className={css(styles.contactFormField)}
+                                    />
+                                    <ContactField
+                                        empty={
+                                            this.state.emptyField
+                                            && this.contactFieldIsEmpty('contactEmail')
+                                        }
+                                        onChange={() => {
+                                            if (this.state.emptyField) {
+                                                this.setState({
+                                                    emptyField: false
+                                                });
+                                            }
+                                        }}
+                                        id='contactEmail'
+                                        variant='outlined'
+                                        label='Email'
+                                        className={css(styles.contactFormField)}
+                                    />
+                                    <ContactField
+                                        empty={
+                                            this.state.emptyField
+                                            && this.contactFieldIsEmpty('contactMessage')
+                                        }
+                                        onChange={() => {
+                                            if (this.state.emptyField) {
+                                                this.setState({
+                                                    emptyField: false
+                                                });
+                                            }
+                                        }}
+                                        id='contactMessage'
+                                        multiline
+                                        rows={4}
+                                        variant='outlined'
+                                        label='Message'
+                                        className={css(styles.contactFormField)}
+                                    />
+                                    <Button
+                                        variant='outlined'
+                                        className={css(styles.contactFormField)}
+                                        style={{ width: '50%', alignSelf: 'flex-end' }}
+                                        onClick={() => this.sendEmail()}
+                                    >
+                                        Submit
+                                    </Button>
+                                </div>
+                            )
+                    }
                 </div>
                 <div className={css(styles.footer)}>
                     <div
@@ -693,6 +713,11 @@ class HomePage extends Component {
 }
 
 const styles = StyleSheet.create({
+    contactMade: {
+        color: colors.TEAL_ACCENT,
+        textAlign: 'center',
+        margin: '0 10px',
+    },
     contactFormEmpty: {
         borderRadius: 0,
         background: 'rgba(0, 0, 0, 0.0)',
