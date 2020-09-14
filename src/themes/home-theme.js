@@ -76,29 +76,5 @@ export const HomeTheme = createMuiTheme({
                 color: 'white',
             }
         },
-        MuiFormLabel: {
-            root: {
-                color: 'white',
-                '&$focused': {
-                    color: colors.TEAL_ACCENT,
-                }
-            },
-        },
-        MuiOutlinedInput: {
-            root: {
-                borderRadius: 0,
-                background: 'rgba(0, 0, 0, 0.5)',
-                '& $notchedOutline': {
-                    borderColor: colors.TEAL_ACCENT,
-                },
-                '&:hover $notchedOutline': {
-                    borderColor: colors.TEAL_ACCENT,
-                },
-                '&$focused $notchedOutline': {
-                    borderColor: colors.TEAL_ACCENT,
-                    background: 'rgb(52, 235, 180, 0.25)',
-                }
-            }
-        }
     }
 });

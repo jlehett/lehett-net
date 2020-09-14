@@ -8,8 +8,18 @@ const path = require('path');
 const mongoose = require('mongoose');
 const PORT = 80;
 
+// Configure dotenv
+require('dotenv').config();
+
+// Import all other API's that are going to be used
+const contactMeAPI = require('./routes/home/contact-me');
+
+// Set the app to use some libraries
 app.use(cors());
 app.use(bodyParser.json());
+
+// Set the app to use the imported API's
+app.use('/api/contact-me', contactMeAPI);
 
 // Serve up files from the build directory
 app.use(express.static(path.join(__dirname, '../build')));

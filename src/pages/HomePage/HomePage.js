@@ -1,4 +1,5 @@
 import React, { Component, useRef } from 'react';
+import { connect } from 'react-redux';
 import {
     AppBar,
     Button,
@@ -38,13 +39,18 @@ import PotentialFieldPNG from '../../assets/project-backgrounds/potentialfield.p
 import RayTracingPNG from '../../assets/project-backgrounds/ray-tracing-vis.png';
 import Media from 'react-media';
 import Div100vh from 'react-div-100vh';
+import { contactMe } from '../../data/state/contact-me/contact-me.actions';
+import ContactField from '../../components/home/contact-field';
 
-export default class HomePage extends Component {
+class HomePage extends Component {
     state = {
         windowHeight: window.innerHeight,
         viewedSection: 'Home',
         selectedTechCategoryIndex: 0,
-    }
+        errorSendingMessage: false,
+        errorMessage: '',
+        emptyField: false,
+    };
 
     webTechnologies = [
         'JavaScript / TypeScript',
@@ -84,6 +90,30 @@ export default class HomePage extends Component {
         <Robot className={css(styles.categoryIconMobile)}/>,
         <People className={css(styles.categoryIconMobile)}/>
     ];
+
+    async sendEmail() {
+        const fromName = document.getElementById('contactName').value;
+        const fromEmail = document.getElementById('contactEmail').value;
+        const message = document.getElementById('contactMessage').value;
+
+        if (fromName && fromEmail && message) {
+            const response = await this.props.contactMe(
+                fromName,
+                fromEmail,
+                message
+            );
+            this.setState({
+                errorSendingMessage: response.error,
+                errorMessage: response.message
+            });
+        } else {
+            this.setState({
+                errorSendingMessage: false,
+                errorMessage: '',
+                emptyField: true,
+            });
+        }
+    }
 
     getSelectedTechCategory() {
         return this.techCategories[this.state.selectedTechCategoryIndex];
@@ -296,6 +326,10 @@ export default class HomePage extends Component {
                     )}
             </Media>
         )
+    }
+
+    contactFieldIsEmpty(fieldID) {
+        return !(document.getElementById(fieldID).value);
     }
 
     render() {
@@ -539,10 +573,65 @@ export default class HomePage extends Component {
                         </Typography>
                     </div>
                     <div className={css(styles.contactForm)}>
-                        <TextField variant='outlined' label='Name' className={css(styles.contactFormField)}/>
-                        <TextField variant='outlined' label='Email' className={css(styles.contactFormField)}/>
-                        <TextField multiline rows={4} variant='outlined' label='Message' className={css(styles.contactFormField)}/>
-                        <Button variant='outlined' className={css(styles.contactFormField)} style={{ width: '50%', alignSelf: 'flex-end' }}>
+                        <ContactField
+                            empty={
+                                this.state.emptyField
+                                && this.contactFieldIsEmpty('contactName')
+                            }
+                            onChange={() => {
+                                if (this.state.emptyField) {
+                                    this.setState({
+                                        emptyField: false
+                                    });
+                                }
+                            }}
+                            id='contactName'
+                            variant='outlined'
+                            label='Name'
+                            className={css(styles.contactFormField)}
+                        />
+                        <ContactField
+                            empty={
+                                this.state.emptyField
+                                && this.contactFieldIsEmpty('contactEmail')
+                            }
+                            onChange={() => {
+                                if (this.state.emptyField) {
+                                    this.setState({
+                                        emptyField: false
+                                    });
+                                }
+                            }}
+                            id='contactEmail'
+                            variant='outlined'
+                            label='Email'
+                            className={css(styles.contactFormField)}
+                        />
+                        <ContactField
+                            empty={
+                                this.state.emptyField
+                                && this.contactFieldIsEmpty('contactMessage')
+                            }
+                            onChange={() => {
+                                if (this.state.emptyField) {
+                                    this.setState({
+                                        emptyField: false
+                                    });
+                                }
+                            }}
+                            id='contactMessage'
+                            multiline
+                            rows={4}
+                            variant='outlined'
+                            label='Message'
+                            className={css(styles.contactFormField)}
+                        />
+                        <Button
+                            variant='outlined'
+                            className={css(styles.contactFormField)}
+                            style={{ width: '50%', alignSelf: 'flex-end' }}
+                            onClick={() => this.sendEmail()}
+                        >
                             Submit
                         </Button>
                     </div>
@@ -604,6 +693,20 @@ export default class HomePage extends Component {
 }
 
 const styles = StyleSheet.create({
+    contactFormEmpty: {
+        borderRadius: 0,
+        background: 'rgba(0, 0, 0, 0.0)',
+        '& $notchedOutline': {
+            borderColor: colors.TEAL_ACCENT,
+        },
+        '&:hover $notchedOutline': {
+            borderColor: colors.TEAL_ACCENT,
+        },
+        '&$focused $notchedOutline': {
+            borderColor: colors.TEAL_ACCENT,
+            background: 'rgb(52, 235, 180, 0.25)',
+        }
+    },
     contactText: {
         textAlign: 'center',
         '@media (min-width: 600px)': {
@@ -635,7 +738,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        transition: '0.25s',
     },
     socialMediaButton: {
         width: '100%',
@@ -649,7 +751,7 @@ const styles = StyleSheet.create({
             background: colors.TEAL_ACCENT,
             boxShadow: '0 0 10px 0 ' + colors.TEAL_ACCENT,
         },
-        transition: '0.25s',
+        transition: 'transform 0.25s, background 0.25s, box-shadow 0.25s',
     },
     socialMediaIcon: {
         fontSize: '25px',  
@@ -668,7 +770,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        transition: '0.25s',
+        transition: 'background 0.25s',
         ":hover": {
             background: '#f91f7a',
         }
@@ -1051,3 +1153,15 @@ const styles = StyleSheet.create({
         width: '100%',
     }
 });
+
+const mapStateToProps = (state) => {
+    return {
+
+    };
+};
+
+const mapDispatchToProps = {
+    contactMe
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
