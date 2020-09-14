@@ -8,11 +8,12 @@ export function contactMe(
 ) {
     return async (dispatch) => {
         if (fromName && fromEmail && message) {
-            const response = axios.post('/api/contact-me/', {
+            const response = await axios.post('/api/contact-me/', {
                 fromName,
                 fromEmail,
                 message
             });
+            console.log(response);
             return response.data;
         } else {
             return {

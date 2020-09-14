@@ -108,11 +108,6 @@ class HomePage extends Component {
                 errorMessage: response.message,
                 messageSent: true,
             });
-            if (!response.error) {
-                document.getElementById('contactName').value = '';
-                document.getElementById('contactEmail').value = '';
-                document.getElementById('contactMessage').value = '';
-            }
         } else {
             this.setState({
                 errorSendingMessage: false,
