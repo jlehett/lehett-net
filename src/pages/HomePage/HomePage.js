@@ -10,6 +10,8 @@ import {
     Paper,
     TextField,
 } from '@material-ui/core';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import Loader from 'react-loader-spinner';
 import {
     Menu, WebAsset, People, ChevronLeft, ChevronRight, DoubleArrow
 } from '@material-ui/icons';
@@ -51,6 +53,7 @@ class HomePage extends Component {
         errorMessage: '',
         emptyField: false,
         messageSent: false,
+        messageSending: false,
     };
 
     webTechnologies = [
@@ -98,6 +101,9 @@ class HomePage extends Component {
         const message = document.getElementById('contactMessage').value;
 
         if (fromName && fromEmail && message) {
+            this.setState({
+                messageSending: true
+            });
             const response = await this.props.contactMe(
                 fromName,
                 fromEmail,
@@ -107,6 +113,7 @@ class HomePage extends Component {
                 errorSendingMessage: response.error,
                 errorMessage: response.message,
                 messageSent: true,
+                messageSending: false,
             });
         } else {
             this.setState({
@@ -640,12 +647,31 @@ class HomePage extends Component {
                                         className={css(styles.contactFormField)}
                                     />
                                     <Button
+                                        disabled={this.state.messageSending}
                                         variant='outlined'
                                         className={css(styles.contactFormField)}
-                                        style={{ width: '50%', alignSelf: 'flex-end' }}
+                                        style={{ width: '50%', height: '40px', alignSelf: 'flex-end' }}
                                         onClick={() => this.sendEmail()}
                                     >
-                                        Submit
+                                        {
+                                            this.state.messageSending
+                                                ? (
+                                                    <>
+                                                        <Loader
+                                                            type="TailSpin"
+                                                            color="white"
+                                                            height={20}
+                                                            width={20}
+                                                            style={{
+                                                                marginRight: '10px',
+                                                                transform: 'translate(0, 3px)',
+                                                            }}
+                                                        />
+                                                        Sending...
+                                                    </>
+                                                )
+                                                : 'Submit'
+                                        }
                                     </Button>
                                 </div>
                             )

@@ -61,8 +61,15 @@ export const HomeTheme = createMuiTheme({
             outlined: {
                 background: 'rgba(0, 0, 0, 0.5)',
                 borderColor: colors.TEAL_ACCENT,
+                transition: 'border-color 0.25s',
                 '&:hover': {
                     background: 'rgb(52, 235, 180, 0.25)',
+                    transition: 'border-color 0.25s',
+                },
+                '&$disabled': {
+                    color: 'white',
+                    borderColor: colors.YELLOW_ACCENT,
+                    transition: 'border-color 0.25s',
                 }
             },
         },
