@@ -31,7 +31,7 @@ import {
     scrollToTop,
 } from '../../utils/domUtils';
 import VisibilitySensor from 'react-visibility-sensor';
-import { colors } from '../../utils/colors';
+import { HomeColors } from '../../utils/colors';
 import ProjectItem from '../../components/home/project-item';
 import ComputerGraphicsPNG from '../../assets/project-backgrounds/computer-graphics-project.png';
 import ComputerVisionPNG from '../../assets/project-backgrounds/computer-vision.png';
@@ -43,6 +43,9 @@ import Media from 'react-media';
 import Div100vh from 'react-div-100vh';
 import { contactMe } from '../../data/state/contact-me/contact-me.actions';
 import ContactField from '../../components/home/contact-field';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { HomeTheme } from '../../themes/home-theme';
+import { Helmet } from 'react-helmet';
 
 class HomePage extends Component {
     state = {
@@ -180,7 +183,7 @@ class HomePage extends Component {
     renderTechnologyItem(tech) {
         return (
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                <div style={{ width: '4px', minWidth: '4px', height: '8px', minHeight: '8px', background: colors.RED_ACCENT, margin: '0 4px 0 8px' }}/>
+                <div style={{ width: '4px', minWidth: '4px', height: '8px', minHeight: '8px', background: HomeColors.RED_ACCENT, margin: '0 4px 0 8px' }}/>
                 <Typography
                     variant='body1'
                     className={css(styles.techItem)}
@@ -343,399 +346,404 @@ class HomePage extends Component {
 
     render() {
         return (
-            <div>
-                <Div100vh
-                    id='homeSection'
-                    className={css(styles.mediaHeaderDiv)}
-                >
-                    <div>
-                        <P5Wrapper sketch={HeaderMedia}/>
-                    </div>
-                    <div className={css(styles.iamDiv)}>
-                        <div className={css(styles.iamWrapper)}>
-                            <Typography
-                                variant='h3'
-                                className={css(styles.iamText)}
-                            >
-                                Hello, I'm <span className={css(styles.emphasizedText)}>Tanner Lehett.</span>
-                                <br/>
-                                I'm a full-stack web developer.
-                            </Typography>
-                        </div>
-                    </div>
-                </Div100vh>
-                <Paper className={css(styles.navbar)}>
-                    <Toolbar
-                        position='static'
-                        id='toolbar'
-                        className={css(styles.toolbar)}
+            <ThemeProvider theme={HomeTheme}>
+                <Helmet>
+                    <style>{'body { background-color: ' + HomeColors.GRAY_BACKGROUND + '; }'}</style>
+                </Helmet>
+                <div style={{ background: 'white', }}>
+                    <Div100vh
+                        id='homeSection'
+                        className={css(styles.mediaHeaderDiv)}
                     >
-                        <Button onClick={() => scrollToElement('homeSection')}>
-                            <Typography style={{ color: this.state.viewedSection === 'Home' ? '#E63462' : 'white'}}>
-                                Home
-                            </Typography>
-                        </Button>
-                        <Button onClick={() => scrollToElement('aboutSection', 'toolbar')}>
-                            <Typography style={{ color: this.state.viewedSection === 'About' ? '#E63462' : 'white'}}>
-                                About
-                            </Typography>
-                        </Button>
-                        <Button onClick={() => scrollToElement('projectSection', 'toolbar')}>
-                            <Typography style={{ color: this.state.viewedSection === 'Projects' ? '#E63462' : 'white'}}>
-                                Projects
-                            </Typography>
-                        </Button>
-                        <Button onClick={() => scrollToElement('contactSection', 'toolbar')}>
-                            <Typography style={{ color: this.state.viewedSection === 'Contact' ? '#E63462' : 'white'}}>
-                                Contact
-                            </Typography>
-                        </Button>
-                    </Toolbar>
-                </Paper>
-                <div
-                    id='aboutSection'
-                    className={css(styles.aboutSection)}
-                >
-                    <VisibilitySensor>
-                        {({isVisible}) =>
-                            <div className={css(styles.sectionHeader)}>
-                                <Typography variant='h3'>
+                        <div>
+                            <P5Wrapper sketch={HeaderMedia}/>
+                        </div>
+                        <div className={css(styles.iamDiv)}>
+                            <div className={css(styles.iamWrapper)}>
+                                <Typography
+                                    variant='h3'
+                                    className={css(styles.iamText)}
+                                >
+                                    Hello, I'm <span className={css(styles.emphasizedText)}>Tanner Lehett.</span>
+                                    <br/>
+                                    I'm a full-stack web developer.
+                                </Typography>
+                            </div>
+                        </div>
+                    </Div100vh>
+                    <Paper className={css(styles.navbar)}>
+                        <Toolbar
+                            position='static'
+                            id='toolbar'
+                            className={css(styles.toolbar)}
+                        >
+                            <Button onClick={() => scrollToElement('homeSection')}>
+                                <Typography style={{ color: this.state.viewedSection === 'Home' ? '#E63462' : 'white'}}>
+                                    Home
+                                </Typography>
+                            </Button>
+                            <Button onClick={() => scrollToElement('aboutSection', 'toolbar')}>
+                                <Typography style={{ color: this.state.viewedSection === 'About' ? '#E63462' : 'white'}}>
                                     About
                                 </Typography>
-                                <div
-                                    className={css(styles.headerUnderline)}
-                                    style={{ width: isVisible ? '150px' : '0px' }}
-                                />
-                            </div>
-                        }
-                    </VisibilitySensor>
-                    <div className={css(styles.aboutBody)}>
+                            </Button>
+                            <Button onClick={() => scrollToElement('projectSection', 'toolbar')}>
+                                <Typography style={{ color: this.state.viewedSection === 'Projects' ? '#E63462' : 'white'}}>
+                                    Projects
+                                </Typography>
+                            </Button>
+                            <Button onClick={() => scrollToElement('contactSection', 'toolbar')}>
+                                <Typography style={{ color: this.state.viewedSection === 'Contact' ? '#E63462' : 'white'}}>
+                                    Contact
+                                </Typography>
+                            </Button>
+                        </Toolbar>
+                    </Paper>
+                    <div
+                        id='aboutSection'
+                        className={css(styles.aboutSection)}
+                    >
                         <VisibilitySensor>
                             {({isVisible}) =>
-                                <Typography
-                                    variant='h5'
-                                    className={css(styles.introText)}
-                                    style={{
-                                        opacity: isVisible ? '100%' : '0%',
-                                        transition: 'opacity 1s',
-                                        zIndex: '1',
-                                    }}
-                                >
-                                    I'm an aspiring AI and Web Developer,
-                                    <div style={{ height: '10px' }}/>
-                                    And I love creating&nbsp;
-                                    <a
-                                        className={css(styles.emphasizedText)}
-                                        href={'https://www.instagram.com/degenerativepixels/'}
-                                    >
-                                        art
-                                    </a>
-                                    &nbsp;with code!
-                                </Typography>
+                                <div className={css(styles.sectionHeader)}>
+                                    <Typography variant='h3'>
+                                        About
+                                    </Typography>
+                                    <div
+                                        className={css(styles.headerUnderline)}
+                                        style={{ width: isVisible ? '150px' : '0px' }}
+                                    />
+                                </div>
                             }
                         </VisibilitySensor>
-                        <div
-                            style={{
-                                height: '30px',
-                                width: '60%',
-                                marginTop: '35px',
-                                borderTop: '1px dashed rgba(0,0,0,0.25)',
-                            }}
-                        />
-                        <Typography
-                            variant='h6'
-                            className={css(styles.aboutText)}
-                        >
-                            I'm passionate about developing automation
-                            technologies so that people have more time to
-                            do the things that they love. I believe that when
-                            people are given this freedom, creativity thrives!
-                        </Typography>
-                    </div>
-                    <div className={css(styles.aboutBody)}>
-                        <Typography
-                            variant='h6'
-                            className={css(styles.aboutText)}
-                        >
-                            So I want to know how
-                            I can help&nbsp;
-                            <span
-                                className={css(styles.emphasizedText)}
-                                href={'https://www.instagram.com/degenerativepixels/'}
-                            >
-                                YOU
-                            </span>
-                            &nbsp;develop the next product that enriches
-                            people's lives through creativity and freedom.
-                            Here's a little more about the technologies and skills
-                            that I can utilize to help bring your idea
-                            to life:
-                        </Typography>
-                    </div>
-                    { this.renderTechnologiesSection() }
-                </div>
-                <div
-                    className={css(styles.projectSection)}
-                    id='projectSection'
-                >
-                    <div className={css(styles.sectionHeader)}>
-                        <Typography variant='h3'>
-                            Projects
-                        </Typography>
-                        <div
-                            className={css(styles.headerUnderline)}
-                            style={{ width: '200px'}}
-                        />
-                    </div>
-                    <div>
-                        <Typography
-                            variant='h6'
-                            className={css(styles.projectNote)}
-                            style={{ marginTop: '20px' }}
-                        >
-                            Just click on a project to learn more!
-                        </Typography>
-                    </div>
-                    <div
-                        className={css(styles.projectList)}
-                    >
-                        <ProjectItem
-                            backgroundImage={ComputerGraphicsPNG}
-                            title='WebGL Filters Project'
-                            href='https://github.com/jlehett/Computer-Graphics-Final-Project'
-                            translateX='20px'
-                            translateY='10px'
-                            scaleSmall='0.5'
-                            scaleBig='0.75'
-                        />
-                        <ProjectItem
-                            backgroundImage={ComputerVisionPNG}
-                            title='Finger Detection Project'
-                            href='https://www.youtube.com/watch?v=d0OF191IsJI'
-                            translateX='6px'
-                            translateY='-7px'
-                            scaleSmall='0.5'
-                            scaleBig='0.75'
-                        />
-                        <ProjectItem
-                            backgroundImage={NeuralSmithingPNG}
-                            title='Neural Network Learning Resource'
-                            href='https://github.com/jlehett/Neural-Smithing'
-                            translateX='0px'
-                            translateY='0px'
-                            scaleSmall='0.25'
-                            scaleBig='0.45'
-                        />
-                        <ProjectItem
-                            backgroundImage={NeuroStylePNG}
-                            title='NeuroStyle Style Transfer'
-                            href='https://github.com/jlehett/NeuroStyle'
-                            translateX='6px'
-                            translateY='20px'
-                            scaleSmall='0.3'
-                            scaleBig='0.5'
-                        />
-                        <ProjectItem
-                            backgroundImage={PotentialFieldPNG}
-                            title='Potential Field Visualization App'
-                            href='https://github.com/jlehett/Pytential-Fields'
-                            translateX='6px'
-                            translateY='-30px'
-                            scaleSmall='0.3'
-                            scaleBig='0.5'
-                        />
-                        <ProjectItem
-                            backgroundImage={RayTracingPNG}
-                            title='Ray Tracing Visualization App'
-                            href='https://github.com/jlehett/RayTracingVisualization'
-                            translateX='50px'
-                            translateY='-20px'
-                            scaleSmall='0.3'
-                            scaleBig='0.5'
-                        />
-                    </div>
-                </div>
-                <div id='contactSection'/>
-                <TriangleDivEnding
-                    preserveAspectRatio='none'
-                    viewBox='0 0 100 102'
-                    className={css(styles.triangleDivEnding)}
-                />
-                <div className={css(styles.contactSection)}>
-                    <div className={css(styles.sectionHeader)}>
-                        <Typography
-                            variant='h3'
-                            style={{ color: 'white', fontWeight: '600', marginTop: '30px' }}
-                        >
-                            Contact
-                        </Typography>
-                        <div
-                            className={css(styles.headerUnderlineWhite)}
-                            style={{ width: '200px'}}
-                        />
-                        <Typography
-                            variant='h6'
-                            style={{ color: 'white' }}
-                            className={css(styles.contactText)}
-                        >
-                            Get in touch with me! I'm eager to hear from you!
-                        </Typography>
-                    </div>
-                    {
-                        this.state.messageSent
-                            ? (
-                                <div className={css(styles.contactMade)}>
-                                    <Typography variant='h6'>
-                                        Your message has been sent.
-                                        Thanks for reaching out!
-                                    </Typography>
-                                </div>
-                            )
-                            : (
-                                <div className={css(styles.contactForm)}>
-                                    <ContactField
-                                        empty={
-                                            this.state.emptyField
-                                            && this.contactFieldIsEmpty('contactName')
-                                        }
-                                        onChange={() => {
-                                            if (this.state.emptyField) {
-                                                this.setState({
-                                                    emptyField: false
-                                                });
-                                            }
+                        <div className={css(styles.aboutBody)}>
+                            <VisibilitySensor>
+                                {({isVisible}) =>
+                                    <Typography
+                                        variant='h5'
+                                        className={css(styles.introText)}
+                                        style={{
+                                            opacity: isVisible ? '100%' : '0%',
+                                            transition: 'opacity 1s',
+                                            zIndex: '1',
                                         }}
-                                        id='contactName'
-                                        variant='outlined'
-                                        label='Name'
-                                        className={css(styles.contactFormField)}
-                                    />
-                                    <ContactField
-                                        empty={
-                                            this.state.emptyField
-                                            && this.contactFieldIsEmpty('contactEmail')
-                                        }
-                                        onChange={() => {
-                                            if (this.state.emptyField) {
-                                                this.setState({
-                                                    emptyField: false
-                                                });
-                                            }
-                                        }}
-                                        id='contactEmail'
-                                        variant='outlined'
-                                        label='Email'
-                                        className={css(styles.contactFormField)}
-                                    />
-                                    <ContactField
-                                        empty={
-                                            this.state.emptyField
-                                            && this.contactFieldIsEmpty('contactMessage')
-                                        }
-                                        onChange={() => {
-                                            if (this.state.emptyField) {
-                                                this.setState({
-                                                    emptyField: false
-                                                });
-                                            }
-                                        }}
-                                        id='contactMessage'
-                                        multiline
-                                        rows={4}
-                                        variant='outlined'
-                                        label='Message'
-                                        className={css(styles.contactFormField)}
-                                    />
-                                    <Button
-                                        disabled={this.state.messageSending}
-                                        variant='outlined'
-                                        className={css(styles.contactFormField)}
-                                        style={{ width: '50%', height: '40px', alignSelf: 'flex-end' }}
-                                        onClick={() => this.sendEmail()}
                                     >
-                                        {
-                                            this.state.messageSending
-                                                ? (
-                                                    <>
-                                                        <Loader
-                                                            type="TailSpin"
-                                                            color="white"
-                                                            height={20}
-                                                            width={20}
-                                                            style={{
-                                                                marginRight: '10px',
-                                                                transform: 'translate(0, 3px)',
-                                                            }}
-                                                        />
-                                                        Sending...
-                                                    </>
-                                                )
-                                                : 'Submit'
-                                        }
-                                    </Button>
-                                </div>
-                            )
-                    }
-                </div>
-                <div className={css(styles.footer)}>
+                                        I'm an aspiring AI and Web Developer,
+                                        <div style={{ height: '10px' }}/>
+                                        And I love creating&nbsp;
+                                        <a
+                                            className={css(styles.emphasizedText)}
+                                            href={'https://www.instagram.com/degenerativepixels/'}
+                                        >
+                                            art
+                                        </a>
+                                        &nbsp;with code!
+                                    </Typography>
+                                }
+                            </VisibilitySensor>
+                            <div
+                                style={{
+                                    height: '30px',
+                                    width: '60%',
+                                    marginTop: '35px',
+                                    borderTop: '1px dashed rgba(0,0,0,0.25)',
+                                }}
+                            />
+                            <Typography
+                                variant='h6'
+                                className={css(styles.aboutText)}
+                            >
+                                I'm passionate about developing automation
+                                technologies so that people have more time to
+                                do the things that they love. I believe that when
+                                people are given this freedom, creativity thrives!
+                            </Typography>
+                        </div>
+                        <div className={css(styles.aboutBody)}>
+                            <Typography
+                                variant='h6'
+                                className={css(styles.aboutText)}
+                            >
+                                So I want to know how
+                                I can help&nbsp;
+                                <span
+                                    className={css(styles.emphasizedText)}
+                                    href={'https://www.instagram.com/degenerativepixels/'}
+                                >
+                                    YOU
+                                </span>
+                                &nbsp;develop the next product that enriches
+                                people's lives through creativity and freedom.
+                                Here's a little more about the technologies and skills
+                                that I can utilize to help bring your idea
+                                to life:
+                            </Typography>
+                        </div>
+                        { this.renderTechnologiesSection() }
+                    </div>
                     <div
-                        className={css(styles.backToTopButton)}
-                        onClick={() => scrollToTop()}
+                        className={css(styles.projectSection)}
+                        id='projectSection'
                     >
-                        <DoubleArrow className={css(styles.backToTopIcon)}/>
+                        <div className={css(styles.sectionHeader)}>
+                            <Typography variant='h3'>
+                                Projects
+                            </Typography>
+                            <div
+                                className={css(styles.headerUnderline)}
+                                style={{ width: '200px'}}
+                            />
+                        </div>
+                        <div>
+                            <Typography
+                                variant='h6'
+                                className={css(styles.projectNote)}
+                                style={{ marginTop: '20px' }}
+                            >
+                                Just click on a project to learn more!
+                            </Typography>
+                        </div>
+                        <div
+                            className={css(styles.projectList)}
+                        >
+                            <ProjectItem
+                                backgroundImage={ComputerGraphicsPNG}
+                                title='WebGL Filters Project'
+                                href='https://github.com/jlehett/Computer-Graphics-Final-Project'
+                                translateX='20px'
+                                translateY='10px'
+                                scaleSmall='0.5'
+                                scaleBig='0.75'
+                            />
+                            <ProjectItem
+                                backgroundImage={ComputerVisionPNG}
+                                title='Finger Detection Project'
+                                href='https://www.youtube.com/watch?v=d0OF191IsJI'
+                                translateX='6px'
+                                translateY='-7px'
+                                scaleSmall='0.5'
+                                scaleBig='0.75'
+                            />
+                            <ProjectItem
+                                backgroundImage={NeuralSmithingPNG}
+                                title='Neural Network Learning Resource'
+                                href='https://github.com/jlehett/Neural-Smithing'
+                                translateX='0px'
+                                translateY='0px'
+                                scaleSmall='0.25'
+                                scaleBig='0.45'
+                            />
+                            <ProjectItem
+                                backgroundImage={NeuroStylePNG}
+                                title='NeuroStyle Style Transfer'
+                                href='https://github.com/jlehett/NeuroStyle'
+                                translateX='6px'
+                                translateY='20px'
+                                scaleSmall='0.3'
+                                scaleBig='0.5'
+                            />
+                            <ProjectItem
+                                backgroundImage={PotentialFieldPNG}
+                                title='Potential Field Visualization App'
+                                href='https://github.com/jlehett/Pytential-Fields'
+                                translateX='6px'
+                                translateY='-30px'
+                                scaleSmall='0.3'
+                                scaleBig='0.5'
+                            />
+                            <ProjectItem
+                                backgroundImage={RayTracingPNG}
+                                title='Ray Tracing Visualization App'
+                                href='https://github.com/jlehett/RayTracingVisualization'
+                                translateX='50px'
+                                translateY='-20px'
+                                scaleSmall='0.3'
+                                scaleBig='0.5'
+                            />
+                        </div>
                     </div>
-                    <div className={css(styles.socialMediaDiv)}>
-                        <a
-                            className={css(styles.socialMediaLink)}
-                            href='https://github.com/jlehett'
-                        >
-                            <div className={css(styles.socialMediaButtonWrapper)}>
-                                <div className={css(styles.socialMediaButton)}>
-                                    <GitHub className={css(styles.socialMediaIcon)}/>
-                                </div>
-                            </div>
-                        </a>
-                        <a
-                            className={css(styles.socialMediaLink)}
-                            href='https://www.linkedin.com/in/johnlehett/'
-                        >
-                            <div className={css(styles.socialMediaButtonWrapper)}>
-                                <div className={css(styles.socialMediaButton)}>
-                                    <LinkedIn className={css(styles.socialMediaIcon)}/>
-                                </div>
-                            </div>
-                        </a>
-                        <a
-                            className={css(styles.socialMediaLink)}
-                            href='https://www.instagram.com/degenerativepixels/'
-                        >
-                            <div className={css(styles.socialMediaButtonWrapper)}>
-                                <div className={css(styles.socialMediaButton)}>
-                                    <Instagram className={css(styles.socialMediaIcon)}/>
-                                </div>
-                            </div>
-                        </a>
+                    <div id='contactSection'/>
+                    <TriangleDivEnding
+                        preserveAspectRatio='none'
+                        viewBox='0 0 100 102'
+                        className={css(styles.triangleDivEnding)}
+                    />
+                    <div className={css(styles.contactSection)}>
+                        <div className={css(styles.sectionHeader)}>
+                            <Typography
+                                variant='h3'
+                                style={{ color: 'white', fontWeight: '600', marginTop: '30px' }}
+                            >
+                                Contact
+                            </Typography>
+                            <div
+                                className={css(styles.headerUnderlineWhite)}
+                                style={{ width: '200px'}}
+                            />
+                            <Typography
+                                variant='h6'
+                                style={{ color: 'white' }}
+                                className={css(styles.contactText)}
+                            >
+                                Get in touch with me! I'm eager to hear from you!
+                            </Typography>
+                        </div>
+                        {
+                            this.state.messageSent
+                                ? (
+                                    <div className={css(styles.contactMade)}>
+                                        <Typography variant='h6'>
+                                            Your message has been sent.
+                                            Thanks for reaching out!
+                                        </Typography>
+                                    </div>
+                                )
+                                : (
+                                    <div className={css(styles.contactForm)}>
+                                        <ContactField
+                                            empty={
+                                                this.state.emptyField
+                                                && this.contactFieldIsEmpty('contactName')
+                                            }
+                                            onChange={() => {
+                                                if (this.state.emptyField) {
+                                                    this.setState({
+                                                        emptyField: false
+                                                    });
+                                                }
+                                            }}
+                                            id='contactName'
+                                            variant='outlined'
+                                            label='Name'
+                                            className={css(styles.contactFormField)}
+                                        />
+                                        <ContactField
+                                            empty={
+                                                this.state.emptyField
+                                                && this.contactFieldIsEmpty('contactEmail')
+                                            }
+                                            onChange={() => {
+                                                if (this.state.emptyField) {
+                                                    this.setState({
+                                                        emptyField: false
+                                                    });
+                                                }
+                                            }}
+                                            id='contactEmail'
+                                            variant='outlined'
+                                            label='Email'
+                                            className={css(styles.contactFormField)}
+                                        />
+                                        <ContactField
+                                            empty={
+                                                this.state.emptyField
+                                                && this.contactFieldIsEmpty('contactMessage')
+                                            }
+                                            onChange={() => {
+                                                if (this.state.emptyField) {
+                                                    this.setState({
+                                                        emptyField: false
+                                                    });
+                                                }
+                                            }}
+                                            id='contactMessage'
+                                            multiline
+                                            rows={4}
+                                            variant='outlined'
+                                            label='Message'
+                                            className={css(styles.contactFormField)}
+                                        />
+                                        <Button
+                                            disabled={this.state.messageSending}
+                                            variant='outlined'
+                                            className={css(styles.contactFormField)}
+                                            style={{ width: '50%', height: '40px', alignSelf: 'flex-end' }}
+                                            onClick={() => this.sendEmail()}
+                                        >
+                                            {
+                                                this.state.messageSending
+                                                    ? (
+                                                        <>
+                                                            <Loader
+                                                                type="TailSpin"
+                                                                color="white"
+                                                                height={20}
+                                                                width={20}
+                                                                style={{
+                                                                    marginRight: '10px',
+                                                                    transform: 'translate(0, 3px)',
+                                                                }}
+                                                            />
+                                                            Sending...
+                                                        </>
+                                                    )
+                                                    : 'Submit'
+                                            }
+                                        </Button>
+                                    </div>
+                                )
+                        }
                     </div>
-                    <Typography
-                        variant='body2'
-                        style={{
-                            textTransform: 'uppercase',
-                            color: '#6a8a95',
-                            marginTop: '25px',
-                            fontSize: '0.85rem',
-                        }}
-                    >
-                        Tanner Lehett
-                    </Typography>
+                    <div className={css(styles.footer)}>
+                        <div
+                            className={css(styles.backToTopButton)}
+                            onClick={() => scrollToTop()}
+                        >
+                            <DoubleArrow className={css(styles.backToTopIcon)}/>
+                        </div>
+                        <div className={css(styles.socialMediaDiv)}>
+                            <a
+                                className={css(styles.socialMediaLink)}
+                                href='https://github.com/jlehett'
+                            >
+                                <div className={css(styles.socialMediaButtonWrapper)}>
+                                    <div className={css(styles.socialMediaButton)}>
+                                        <GitHub className={css(styles.socialMediaIcon)}/>
+                                    </div>
+                                </div>
+                            </a>
+                            <a
+                                className={css(styles.socialMediaLink)}
+                                href='https://www.linkedin.com/in/johnlehett/'
+                            >
+                                <div className={css(styles.socialMediaButtonWrapper)}>
+                                    <div className={css(styles.socialMediaButton)}>
+                                        <LinkedIn className={css(styles.socialMediaIcon)}/>
+                                    </div>
+                                </div>
+                            </a>
+                            <a
+                                className={css(styles.socialMediaLink)}
+                                href='https://www.instagram.com/degenerativepixels/'
+                            >
+                                <div className={css(styles.socialMediaButtonWrapper)}>
+                                    <div className={css(styles.socialMediaButton)}>
+                                        <Instagram className={css(styles.socialMediaIcon)}/>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <Typography
+                            variant='body2'
+                            style={{
+                                textTransform: 'uppercase',
+                                color: '#6a8a95',
+                                marginTop: '25px',
+                                fontSize: '0.85rem',
+                            }}
+                        >
+                            Tanner Lehett
+                        </Typography>
+                    </div>
                 </div>
-            </div>
+            </ThemeProvider>
         );
     }
 }
 
 const styles = StyleSheet.create({
     contactMade: {
-        color: colors.TEAL_ACCENT,
+        color: HomeColors.TEAL_ACCENT,
         textAlign: 'center',
         margin: '0 10px',
     },
@@ -743,13 +751,13 @@ const styles = StyleSheet.create({
         borderRadius: 0,
         background: 'rgba(0, 0, 0, 0.0)',
         '& $notchedOutline': {
-            borderColor: colors.TEAL_ACCENT,
+            borderColor: HomeColors.TEAL_ACCENT,
         },
         '&:hover $notchedOutline': {
-            borderColor: colors.TEAL_ACCENT,
+            borderColor: HomeColors.TEAL_ACCENT,
         },
         '&$focused $notchedOutline': {
-            borderColor: colors.TEAL_ACCENT,
+            borderColor: HomeColors.TEAL_ACCENT,
             background: 'rgb(52, 235, 180, 0.25)',
         }
     },
@@ -794,8 +802,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         ":hover": {
             transform: 'scale(0.9)',
-            background: colors.TEAL_ACCENT,
-            boxShadow: '0 0 10px 0 ' + colors.TEAL_ACCENT,
+            background: HomeColors.TEAL_ACCENT,
+            boxShadow: '0 0 10px 0 ' + HomeColors.TEAL_ACCENT,
         },
         transition: 'transform 0.25s, background 0.25s, box-shadow 0.25s',
     },
@@ -811,7 +819,7 @@ const styles = StyleSheet.create({
         cursor: 'pointer',
         width: '45px',
         height: '50px',
-        background: colors.RED_ACCENT,
+        background: HomeColors.RED_ACCENT,
         transform: 'translate(0, -50%)',
         display: 'flex',
         alignItems: 'center',
@@ -823,7 +831,7 @@ const styles = StyleSheet.create({
     },
     footer: {
         height: '225px',
-        background: colors.GRAY_BACKGROUND,
+        background: HomeColors.GRAY_BACKGROUND,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -846,8 +854,8 @@ const styles = StyleSheet.create({
         padding: '20px 0',
         color: 'white',
         justifyContent: 'center',
-        background: colors.GRAY_BACKGROUND,
-        borderBottom: '4px solid ' + colors.RED_ACCENT,
+        background: HomeColors.GRAY_BACKGROUND,
+        borderBottom: '4px solid ' + HomeColors.RED_ACCENT,
     },
     changeCategoryIcon: {
         fontSize: '60px',
@@ -902,7 +910,7 @@ const styles = StyleSheet.create({
     },
     triangleDivEnding: {
         color: 'white',
-        background: colors.LIGHT_GRAY_BACKGROUND,
+        background: HomeColors.LIGHT_GRAY_BACKGROUND,
         transform: 'translate(0, 7px)',
         display: 'inherit',
     },
@@ -980,10 +988,10 @@ const styles = StyleSheet.create({
     },
     categoryIconMobile: {
         fontSize: '60px',
-        color: colors.GRAY_BACKGROUND,
+        color: HomeColors.GRAY_BACKGROUND,
     },
     categoryIconWrapper: {
-        background: colors.GRAY_BACKGROUND,
+        background: HomeColors.GRAY_BACKGROUND,
         '@media (min-width: 1000px)': {
             width: '70px',
             height: '70px',
@@ -996,7 +1004,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: '10px',
-        border: '3px solid ' + colors.TEAL_ACCENT,
+        border: '3px solid ' + HomeColors.TEAL_ACCENT,
         marginBottom: '8px',
     },
     categoryIconWrapperMobile: {
@@ -1007,7 +1015,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: '10px',
-        border: '3px solid ' + colors.RED_ACCENT,
+        border: '3px solid ' + HomeColors.RED_ACCENT,
         marginBottom: '8px',
     },
     technologyCard: {
@@ -1055,14 +1063,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: '32px 0',
-        background: colors.TEAL_ACCENT,
+        background: HomeColors.TEAL_ACCENT,
         marginTop: '50px',
     },
     technologiesSectionMobile: {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        background: colors.TEAL_ACCENT,
+        background: HomeColors.TEAL_ACCENT,
         marginTop: '50px',
     },
     aboutBody: {
@@ -1140,20 +1148,20 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         color: 'white',
         background: 'rgba(0, 0, 0, 0.9)',
-        border: '2px solid ' + colors.TEAL_ACCENT,
+        border: '2px solid ' + HomeColors.TEAL_ACCENT,
         padding: '30px',
         boxShadow: '0 0 20px 0 rgba(82, 255, 184, 0.45)',
     },
     emphasizedText: {
         fontWeight: '600',
-        color: colors.RED_ACCENT,
+        color: HomeColors.RED_ACCENT,
     },
     navbar: {
         position: 'sticky',
         top: 0,
-        backgroundColor: colors.GRAY_BACKGROUND,
+        backgroundColor: HomeColors.GRAY_BACKGROUND,
         borderRadius: 0,
-        borderBottom: '3px solid ' + colors.TEAL_ACCENT,
+        borderBottom: '3px solid ' + HomeColors.TEAL_ACCENT,
         zIndex: 2
     },
     toolbar: {
@@ -1166,10 +1174,11 @@ const styles = StyleSheet.create({
         },
     },
     aboutSection: {
-
+        background: 'white',
     },
     projectSection: {
         display: 'flex',
+        background: 'white',
         flexDirection: 'column',
         alignItems: 'center',
         '@media (min-width: 1500px)': {
@@ -1186,7 +1195,7 @@ const styles = StyleSheet.create({
         },
     },
     contactSection: {
-        background: colors.LIGHT_GRAY_BACKGROUND,
+        background: HomeColors.LIGHT_GRAY_BACKGROUND,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

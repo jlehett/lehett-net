@@ -25,7 +25,7 @@ app.use('/api/contact-me', contactMeAPI);
 app.use(express.static(path.join(__dirname, '../build')));
 
 // The home page
-app.get('/', function(req, res) {
+app.get(/^\/(?!api).*/, function(req, res) {
     res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
 

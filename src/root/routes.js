@@ -3,15 +3,19 @@ import{ Redirect, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 import HomePage from '../pages/HomePage/HomePage';
 import { HomeTheme } from '../themes/home-theme';
+import MosaicPage from '../pages/MosaicPage/MosaicPage';
 
 export default (
     <Switch>
-        <ThemeProvider theme={HomeTheme}>
-            <Route
-                exact
-                path='/'
-                component={HomePage}
-            />
-        </ThemeProvider>
+        <Route
+            exact
+            path='/'
+            component={HomePage}
+        />
+        <Route
+            exact
+            path='/mosaic'
+            component={MosaicPage}
+        />
     </Switch>
 );

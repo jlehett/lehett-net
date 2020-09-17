@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import { Computer } from '@material-ui/icons';
 import { Typography } from '@material-ui/core';
-import { colors } from '../../utils/colors';
+import { HomeColors } from '../../utils/colors';
 import Media from 'react-media';
 
 export default class ProjectItem extends Component {
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
         width: '100%',
         top: '100%',
         color: 'white',
-        borderTop: '4px solid ' + colors.TEAL_ACCENT,
+        borderTop: '4px solid ' + HomeColors.TEAL_ACCENT,
         background: 'rgba(0, 0, 0, 0.90)',
         transition: '0.25s',
         textAlign: 'center',

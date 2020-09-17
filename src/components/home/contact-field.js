@@ -1,34 +1,34 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core';
-import { colors } from '../../utils/colors';
+import { HomeColors } from '../../utils/colors';
 
 const styles = theme => ({
     inputLabelRootNonempty: {
         color: 'white',
         '&$focused': {
-            color: colors.TEAL_ACCENT,
+            color: HomeColors.TEAL_ACCENT,
         }
     },
     inputLabelRootEmpty: {
         color: 'white',
         '&$focused': {
-            color: colors.RED_ACCENT,
+            color: HomeColors.RED_ACCENT,
         }
     },
     inputRootNonempty: {
         borderRadius: 0,
         background: 'rgba(0, 0, 0, 0.5)',
         '& $notchedOutline': {
-            borderColor: colors.TEAL_ACCENT,
+            borderColor: HomeColors.TEAL_ACCENT,
             transition: 'border-color 0.25s',
         },
         '&:hover $notchedOutline': {
-            borderColor: colors.TEAL_ACCENT,
+            borderColor: HomeColors.TEAL_ACCENT,
             transition: 'border-color 0.25s',
         },
         '&$focused $notchedOutline': {
-            borderColor: colors.TEAL_ACCENT,
+            borderColor: HomeColors.TEAL_ACCENT,
             background: 'rgb(52, 235, 180, 0.25)',
             transition: 'border-color 0.25s',
         }
@@ -37,15 +37,15 @@ const styles = theme => ({
         borderRadius: 0,
         background: 'rgba(0, 0, 0, 0.5)',
         '& $notchedOutline': {
-            borderColor: colors.RED_ACCENT,
+            borderColor: HomeColors.RED_ACCENT,
             transition: 'border-color 0.25s',
         },
         '&:hover $notchedOutline': {
-            borderColor: colors.RED_ACCENT,
+            borderColor: HomeColors.RED_ACCENT,
             transition: 'border-color 0.25s',
         },
         '&$focused $notchedOutline': {
-            borderColor: colors.RED_ACCENT,
+            borderColor: HomeColors.RED_ACCENT,
             background: 'rgb(245, 66, 66, 0.25)',
             transition: 'border-color 0.25s',
         }

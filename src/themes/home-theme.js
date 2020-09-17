@@ -1,5 +1,5 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import { colors } from '../utils/colors';
+import { HomeColors } from '../utils/colors';
 
 export const HomeTheme = createMuiTheme({
     palette: {
@@ -60,7 +60,7 @@ export const HomeTheme = createMuiTheme({
             },
             outlined: {
                 background: 'rgba(0, 0, 0, 0.5)',
-                borderColor: colors.TEAL_ACCENT,
+                borderColor: HomeColors.TEAL_ACCENT,
                 transition: 'border-color 0.25s',
                 '&:hover': {
                     background: 'rgb(52, 235, 180, 0.25)',
@@ -68,7 +68,7 @@ export const HomeTheme = createMuiTheme({
                 },
                 '&$disabled': {
                     color: 'white',
-                    borderColor: colors.YELLOW_ACCENT,
+                    borderColor: HomeColors.YELLOW_ACCENT,
                     transition: 'border-color 0.25s',
                 }
             },
