@@ -16,6 +16,7 @@ import Header from '../../components/my-mosaic/header';
 
 class MosaicPage extends Component {
     state = {
+        imgSource: '',
         filetypeError: false,
     };
 
@@ -27,6 +28,7 @@ class MosaicPage extends Component {
 
     onFileSelected = (event) => {
         this.setState({
+            imgSource: '',
             filetypeError: false
         });
         const file = event.target.files[0];
@@ -34,10 +36,20 @@ class MosaicPage extends Component {
             this.setState({
                 filetypeError: true
             });
+        } else {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = readerEvent => {
+                const content = readerEvent.target.result;
+                this.setState({
+                    imgSource: content
+                });
+            }
         }
     }
 
     render() {
+        console.log(this.state.imgSource);
         return (
             <ThemeProvider theme={MyMosaicTheme}>
                 <Helmet>
@@ -45,7 +57,17 @@ class MosaicPage extends Component {
                 </Helmet>
                 <Header/>
                 <div className={css(styles.body)}>
-                    <div className={css(styles.pictureDiv)}>
+                    <div
+                        className={css(styles.pictureDiv)}
+                        style={{
+                            background: this.state.imgSource
+                                ? null
+                                : 'white',
+                            backgroundImage: this.state.imgSource
+                                ? 'url(' + this.state.imgSource + ')'
+                                : null
+                        }}
+                    >
                         <div
                             id='filetype-error'
                             className={css(styles.error)}
@@ -109,7 +131,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     pictureDiv: {
-        background: 'white',
+        backgroundSize: '100% 100%',
         marginTop: '25px',
         marginBottom: '25px',
         '@media (min-width: 550px)': {
