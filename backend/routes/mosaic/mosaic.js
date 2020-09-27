@@ -28,7 +28,7 @@ router.post('/generate-mosaic/', function(req, res, next) {
         const randomKey = crypto.randomBytes(20).toString('hex');
         const rootFilepath = 'bin/mosaic/public/' + randomKey;
         const ls = spawn(
-            'python3',
+            'python3.7',
             [
                 'bin/mosaic/mosaic-generation.py',
                 req.body.bingSearch,
