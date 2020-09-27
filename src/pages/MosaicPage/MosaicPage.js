@@ -35,6 +35,7 @@ class MosaicPage extends Component {
 
     onFileSelected = (event) => {
         const file = event.target.files[0];
+        console.log(file);
         if (file) {
             this.setState({
                 imgContent: '',

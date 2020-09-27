@@ -17,13 +17,13 @@ const storage = multer.diskStorage({
 
 const upload = multer({
     storage: storage,
-    limits:{fileSize: 1000000},
+    limits:{fileSize: 100000000},
 }).single('img');
 
 // API that will generate the requested mosaic given the
 // image and the Bing search query.
 router.post('/generate-mosaic/', function(req, res, next) {
-    upload(req, res, (err, filename) => {
+    upload(req, res, (err) => {
         const uploadedImgPath = req.file.path;
         const randomKey = crypto.randomBytes(20).toString('hex');
         const rootFilepath = 'bin/mosaic/public/' + randomKey;
@@ -51,6 +51,13 @@ router.post('/generate-mosaic/', function(req, res, next) {
                             console.log('Deleted working folder...');
                         }
                     });
+                    rimraf(uploadedImgPath, (err) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log('Deleted uploaded image...');
+                        }
+                    })
                 }
             );
         });
