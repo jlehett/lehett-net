@@ -13,13 +13,15 @@ require('dotenv').config();
 
 // Import all other API's that are going to be used
 const contactMeAPI = require('./routes/home/contact-me');
+const mosaicAPI = require('./routes/mosaic/mosaic');
 
 // Set the app to use some libraries
 app.use(cors());
 app.use(bodyParser.json());
 
 // Set the app to use the imported API's
-app.use('/api/contact-me', contactMeAPI);
+app.use('/api/home/contact-me', contactMeAPI);
+app.use('/api/mosaic', mosaicAPI);
 
 // Serve up files from the build directory
 app.use(express.static(path.join(__dirname, '../build')));

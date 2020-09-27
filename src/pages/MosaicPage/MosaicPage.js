@@ -12,12 +12,19 @@ import {
     IconButton,
 } from '@material-ui/core';
 import { Settings, Error } from '@material-ui/icons';
+import { generateImage } from '../../data/state/mosaic/mosaic.actions';
 import Header from '../../components/my-mosaic/header';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import Loader from 'react-loader-spinner';
+import MediaQuery from 'react-responsive';
 
 class MosaicPage extends Component {
     state = {
-        imgSource: '',
+        imgContent: '',
+        imgFile: '',
         filetypeError: false,
+        generatedImage: '',
+        generatingImage: false,
     };
 
     acceptedFiletypes = ['image/png', 'image/jpg', 'image/jpeg'];
@@ -27,29 +34,56 @@ class MosaicPage extends Component {
     }
 
     onFileSelected = (event) => {
-        this.setState({
-            imgSource: '',
-            filetypeError: false
-        });
         const file = event.target.files[0];
-        if (!this.acceptedFiletypes.includes(file.type)) {
+        if (file) {
             this.setState({
-                filetypeError: true
+                imgContent: '',
+                imgFile: '',
+                filetypeError: false,
+                generatedImage: '',
             });
-        } else {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = readerEvent => {
-                const content = readerEvent.target.result;
+            if (!this.acceptedFiletypes.includes(file.type)) {
                 this.setState({
-                    imgSource: content
+                    filetypeError: true
                 });
+            } else {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = readerEvent => {
+                    const content = readerEvent.target.result;
+                    this.setState({
+                        imgContent: content,
+                        imgFile: file
+                    });
+                }
             }
         }
     }
 
+    onFileGenerate = async () => {
+        const imgFile = this.state.imgFile;
+        const bingSearch = document.getElementById('bingSearch').value;
+        if (!imgFile) {
+
+        } else if (!bingSearch) {
+
+        } else {
+            // We should generate the desired image
+            this.setState({
+                generatingImage: true,
+                generatedImage: ''
+            });
+
+            const response = await this.props.generateImage(imgFile, bingSearch);
+
+            this.setState({
+                generatingImage: false,
+                generatedImage: response.data.data
+            });
+        }
+    }
+
     render() {
-        console.log(this.state.imgSource);
         return (
             <ThemeProvider theme={MyMosaicTheme}>
                 <Helmet>
@@ -60,11 +94,13 @@ class MosaicPage extends Component {
                     <div
                         className={css(styles.pictureDiv)}
                         style={{
-                            background: this.state.imgSource
+                            background: this.state.imgContent || this.state.generatedImage
                                 ? null
                                 : 'white',
-                            backgroundImage: this.state.imgSource
-                                ? 'url(' + this.state.imgSource + ')'
+                            backgroundImage: this.state.generatedImage
+                                ? 'url(' + this.state.generatedImage +')'
+                                : this.state.imgContent
+                                ? 'url(' + this.state.imgContent + ')'
                                 : null
                         }}
                     >
@@ -80,6 +116,7 @@ class MosaicPage extends Component {
                         </div>
                     </div>
                     <TextField
+                        id='bingSearch'
                         placeholder='Enter Bing Search'
                         className={css(styles.pageFormItem)}
                     />
@@ -87,6 +124,7 @@ class MosaicPage extends Component {
                         variant='contained'
                         className={css(styles.pageFormItem)}
                         onClick={() => this.openFileSelectDialog()}
+                        disabled={this.state.generatingImage}
                     >
                         <Typography variant='h4'>
                             Upload Image
@@ -107,9 +145,50 @@ class MosaicPage extends Component {
                         <Button
                             variant='contained'
                             className={css(styles.generateButton)}
+                            onClick={() => this.onFileGenerate()}
+                            disabled={this.state.generatingImage}
                         >
-                            <Typography variant='h4'>
-                                Generate Image
+                            <Typography
+                                variant='h4'
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                }}
+                            >
+                                {
+                                    this.state.generatingImage
+                                        ? (
+                                            <>
+                                                <MediaQuery query={'(min-width: 550px)'}>
+                                                    <Loader
+                                                        type="TailSpin"
+                                                        color='rgba(0, 0, 0, 0.26)'
+                                                        height={30}
+                                                        width={30}
+                                                        style={{
+                                                            marginRight: '20px',
+                                                            transform: 'translate(0, 3px)',
+                                                        }}
+                                                    />
+                                                    Generating...
+                                                </MediaQuery>
+                                                <MediaQuery query={'(max-width: 549px)'}>
+                                                    <Loader
+                                                        type="TailSpin"
+                                                        color='rgba(0, 0, 0, 0.26)'
+                                                        height={15}
+                                                        width={15}
+                                                        style={{
+                                                            marginRight: '20px',
+                                                            transform: 'translate(0, 3px)',
+                                                        }}
+                                                    />
+                                                    Generating...
+                                                </MediaQuery>
+                                            </>
+                                        )
+                                        : 'Generate Image'
+                                }
                             </Typography>
                         </Button>
                         <IconButton className={css(styles.settingsButton)}>
@@ -131,7 +210,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     pictureDiv: {
-        backgroundSize: '100% 100%',
+        backgroundSize: '100% 100%',    
         marginTop: '25px',
         marginBottom: '25px',
         '@media (min-width: 550px)': {
@@ -209,7 +288,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-
+    generateImage
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MosaicPage);
