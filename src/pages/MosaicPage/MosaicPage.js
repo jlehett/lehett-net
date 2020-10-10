@@ -11,12 +11,13 @@ import {
     Button,
     IconButton,
 } from '@material-ui/core';
-import { Settings, Error } from '@material-ui/icons';
+import { Settings, Error, GetApp } from '@material-ui/icons';
 import { generateImage } from '../../data/state/mosaic/mosaic.actions';
 import Header from '../../components/my-mosaic/header';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Loader from 'react-loader-spinner';
 import MediaQuery from 'react-responsive';
+import { Link } from 'react-router-dom';
 
 class MosaicPage extends Component {
     state = {
@@ -25,6 +26,7 @@ class MosaicPage extends Component {
         filetypeError: false,
         generatedImage: '',
         generatingImage: false,
+        hoveringImageArea: false,
     };
 
     acceptedFiletypes = ['image/png', 'image/jpg', 'image/jpeg'];
@@ -84,6 +86,20 @@ class MosaicPage extends Component {
         }
     }
 
+    saveGeneratedImage = () => {
+        // Grab the generated image from state
+        const generatedImage = this.state.generatedImage;
+        // If the generated image does not exist, exit
+        if (!generatedImage) return;
+        // Else, save the generated image to the user's computer by
+        // simulating clicking on a link
+        const link = document.createElement('a');
+        document.body.appendChild(link);
+        link.setAttribute('href', generatedImage);
+        link.setAttribute('download', 'generated_mosaic.png')
+        link.click();
+    }
+
     render() {
         return (
             <ThemeProvider theme={MyMosaicTheme}>
@@ -95,6 +111,9 @@ class MosaicPage extends Component {
                     <div
                         className={css(styles.pictureDiv)}
                         style={{
+                            border: this.state.imgContent || this.state.generatedImage
+                                ? null
+                                : '2px solid black',
                             background: this.state.imgContent || this.state.generatedImage
                                 ? null
                                 : 'white',
@@ -102,7 +121,18 @@ class MosaicPage extends Component {
                                 ? 'url(' + this.state.generatedImage +')'
                                 : this.state.imgContent
                                 ? 'url(' + this.state.imgContent + ')'
-                                : null
+                                : null,
+                        }}
+                        onClick={() => this.saveGeneratedImage()}
+                        onMouseEnter={() => {
+                            if (!this.state.hoveringImageArea) {
+                                this.setState({ hoveringImageArea: true });
+                            }
+                        }}
+                        onMouseLeave={() => {
+                            if (this.state.hoveringImageArea) {
+                                this.setState({ hoveringImageArea: false });
+                            }
                         }}
                     >
                         <div
@@ -114,6 +144,31 @@ class MosaicPage extends Component {
                             <Typography variant='h6' className={css(styles.errorText)}>
                                 Accepted Filetypes: .png, .jpg, .jpeg
                             </Typography>
+                        </div>
+                        <div
+                            className={css(styles.hoveredImageArea)}
+                            style={{
+                                backgroundColor: 'rgba(0, 0, 0, 0.75)',
+                                opacity: this.state.hoveringImageArea && this.state.generatedImage
+                                    ? '1.0'
+                                    : '0.0'
+                            }}
+                        >
+                            {
+                                this.state.hoveringImageArea && this.state.generatedImage
+                                    ? (
+                                        <>
+                                            <Typography
+                                                variant='h6'
+                                                className={css(styles.downloadText)}
+                                            >
+                                                Download Image
+                                            </Typography>
+                                            <GetApp className={css(styles.downloadIcon)}/>
+                                        </>
+                                    )
+                                    : null
+                            }
                         </div>
                     </div>
                     <TextField
@@ -210,8 +265,27 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    downloadText: {
+        color: 'white',
+    },
+    downloadIcon: {
+        color: 'white',
+        fontSize: '36px',
+        marginTop: '10px',
+    },
+    hoveredImageArea: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        height: '100%',
+        transition: '0.4s',
+    },
     pictureDiv: {
-        backgroundSize: '100% 100%',    
+        backgroundPosition: 'center',
+        backgroundSize: 'contain',
+        backgroundRepeat: 'no-repeat',    
         marginTop: '25px',
         marginBottom: '25px',
         '@media (min-width: 550px)': {
