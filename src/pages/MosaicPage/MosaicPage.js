@@ -89,6 +89,7 @@ class MosaicPage extends Component {
                 imgFile,
                 bingSearch,
             );
+            console.log(response);
 
             this.setState({
                 generatingImage: false,
@@ -118,18 +119,29 @@ class MosaicPage extends Component {
                 open={this.state.errorGeneratingImage}
                 onClose={() => this.setState({ errorGeneratingImage: false })}
             >
-                <DialogTitle>
-                    Error Generating Image
+                <DialogTitle disableTypography>
+                    <Typography
+                        variant='h1'
+                        className={css(styles.dialogTitle)}
+                    >
+                        Error Generating Image
+                    </Typography>
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
+                    <DialogContentText className={css(styles.dialogText)}>
                         We had a problem while attempting to generate your
-                        mosaic. If you have scaled the image up in the
+                        mosaic.<br/><br/>If you have scaled the image up in the
                         settings, try scaling it back down a little bit.
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => this.setState({ errorGeneratingImage: false })}>
+                    <Button
+                        onClick={() => this.setState({ errorGeneratingImage: false })}
+                        style={{
+                            color: MyMosaicColors.PRIMARY_BLUE_HOVER,
+                            fontWeight: '600',
+                        }}
+                    >
                         OK
                     </Button>
                 </DialogActions>
@@ -312,6 +324,19 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: '36px',
         marginTop: '10px',
+    },
+    dialogText: {
+        fontSize: '16px',
+        '@media (max-width: 549px)': {
+            fontSize: '14px',
+        },
+    },
+    dialogTitle: {
+        fontSize: '20px',
+        fontWeight: '600',
+        '@media (max-width: 549px)': {
+            fontSize: '16px',
+        },
     },
     hoveredImageArea: {
         display: 'flex',
