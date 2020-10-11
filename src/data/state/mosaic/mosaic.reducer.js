@@ -7,6 +7,7 @@ const initialState = {
     uploadedImageFile: null,
     uploadedImageContent: null,
     generatedImage: null,
+    searchQuery: '',
 };
 
 export default function(state = initialState, action) {
@@ -36,6 +37,11 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 generatedImage: action.generatedImage
+            };
+        case types.MOSAIC_SET_SEARCH_QUERY:
+            return {
+                ...state,
+                searchQuery: action.searchQuery
             };
         default:
             return state;

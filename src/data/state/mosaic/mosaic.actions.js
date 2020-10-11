@@ -57,3 +57,9 @@ export function setGeneratedImage(generatedImage) {
         dispatch({ type: types.MOSAIC_SET_GENERATED_IMAGE, generatedImage });
     }
 }
+
+export function setSearchQuery(searchQuery) {
+    return async (dispatch) => {
+        dispatch({ type: types.MOSAIC_SET_SEARCH_QUERY, searchQuery });
+    }
+}

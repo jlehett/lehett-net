@@ -21,11 +21,13 @@ import {
     generateImage,
     setGeneratedImage,
     setUploadedImage,
+    setSearchQuery,
 } from '../../data/state/mosaic/mosaic.actions';
 import {
     mosaicUploadedImageFileSelector,
     mosaicUploadedImageContentSelector,
     mosaicGeneratedImageSelector,
+    mosaicSearchQuerySelector,
 } from '../../data/state/mosaic/mosaic.selectors';
 import Header from '../../components/my-mosaic/header';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
@@ -74,7 +76,7 @@ class MosaicPage extends Component {
 
     onFileGenerate = async () => {
         const imgFile = this.props.uploadedImageFile;
-        const bingSearch = document.getElementById('bingSearch').value;
+        const bingSearch = this.props.searchQuery;
         if (!imgFile) {
 
         } else if (!bingSearch) {
@@ -222,9 +224,10 @@ class MosaicPage extends Component {
                         </div>
                     </div>
                     <TextField
-                        id='bingSearch'
                         placeholder='Enter Bing Search'
                         className={css(styles.pageFormItem)}
+                        value={this.props.searchQuery}
+                        onChange={(event) => this.props.setSearchQuery(event.target.value)}
                     />
                     <Button
                         variant='contained'
@@ -427,6 +430,7 @@ const mapStateToProps = (state) => {
         uploadedImageFile: mosaicUploadedImageFileSelector(state),
         uploadedImageContent: mosaicUploadedImageContentSelector(state),
         generatedImage: mosaicGeneratedImageSelector(state),
+        searchQuery: mosaicSearchQuerySelector(state),
     };
 };
 
@@ -434,6 +438,7 @@ const mapDispatchToProps = {
     generateImage,
     setGeneratedImage,
     setUploadedImage,
+    setSearchQuery,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MosaicPage);

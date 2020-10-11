@@ -21,3 +21,7 @@ export function mosaicUploadedImageContentSelector(state) {
 export function mosaicGeneratedImageSelector(state) {
     return state.mosaic.generatedImage;
 }
+
+export function mosaicSearchQuerySelector(state) {
+    return state.mosaic.searchQuery;
+}
