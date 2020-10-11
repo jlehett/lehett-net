@@ -45,3 +45,15 @@ export function setOutputImageScale(outputImageScale) {
         dispatch({ type: types.MOSAIC_SET_OUTPUT_IMAGE_SCALE, outputImageScale });
     }
 }
+
+export function setUploadedImage(uploadedImageFile, uploadedImageContent) {
+    return async (dispatch) => {
+        dispatch({ type: types.MOSAIC_SET_UPLOADED_IMAGE, uploadedImageFile, uploadedImageContent });
+    }
+}
+
+export function setGeneratedImage(generatedImage) {
+    return async (dispatch) => {
+        dispatch({ type: types.MOSAIC_SET_GENERATED_IMAGE, generatedImage });
+    }
+}

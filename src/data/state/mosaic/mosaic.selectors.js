@@ -9,3 +9,15 @@ export function mosaicTilingImageScaleSelector(state) {
 export function mosaicOutputImageScaleSelector(state) {
     return state.mosaic.outputImageScale;
 }
+
+export function mosaicUploadedImageFileSelector(state) {
+    return state.mosaic.uploadedImageFile;
+}
+
+export function mosaicUploadedImageContentSelector(state) {
+    return state.mosaic.uploadedImageContent;
+}
+
+export function mosaicGeneratedImageSelector(state) {
+    return state.mosaic.generatedImage;
+}

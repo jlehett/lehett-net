@@ -17,7 +17,16 @@ import {
     DialogTitle,
 } from '@material-ui/core';
 import { Settings, Error, GetApp } from '@material-ui/icons';
-import { generateImage } from '../../data/state/mosaic/mosaic.actions';
+import {
+    generateImage,
+    setGeneratedImage,
+    setUploadedImage,
+} from '../../data/state/mosaic/mosaic.actions';
+import {
+    mosaicUploadedImageFileSelector,
+    mosaicUploadedImageContentSelector,
+    mosaicGeneratedImageSelector,
+} from '../../data/state/mosaic/mosaic.selectors';
 import Header from '../../components/my-mosaic/header';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Loader from 'react-loader-spinner';
@@ -26,10 +35,7 @@ import { Link } from 'react-router-dom';
 
 class MosaicPage extends Component {
     state = {
-        imgContent: '',
-        imgFile: '',
         filetypeError: false,
-        generatedImage: '',
         generatingImage: false,
         hoveringImageArea: false,
         errorGeneratingImage: false,
@@ -46,12 +52,11 @@ class MosaicPage extends Component {
         console.log(file);
         if (file) {
             this.setState({
-                imgContent: '',
-                imgFile: '',
                 filetypeError: false,
-                generatedImage: '',
                 errorGeneratingImage: false,
             });
+            this.props.setGeneratedImage('');
+            this.props.setUploadedImage('', '');
             if (!this.acceptedFiletypes.includes(file.type)) {
                 this.setState({
                     filetypeError: true
@@ -61,17 +66,14 @@ class MosaicPage extends Component {
                 reader.readAsDataURL(file);
                 reader.onload = readerEvent => {
                     const content = readerEvent.target.result;
-                    this.setState({
-                        imgContent: content,
-                        imgFile: file
-                    });
+                    this.props.setUploadedImage(file, content);
                 }
             }
         }
     }
 
     onFileGenerate = async () => {
-        const imgFile = this.state.imgFile;
+        const imgFile = this.props.uploadedImageFile;
         const bingSearch = document.getElementById('bingSearch').value;
         if (!imgFile) {
 
@@ -81,9 +83,9 @@ class MosaicPage extends Component {
             // We should generate the desired image
             this.setState({
                 generatingImage: true,
-                generatedImage: '',
                 errorGeneratingImage: false,
             });
+            this.props.setGeneratedImage('');
 
             const response = await this.props.generateImage(
                 imgFile,
@@ -92,15 +94,15 @@ class MosaicPage extends Component {
 
             this.setState({
                 generatingImage: false,
-                generatedImage: response.data.data,
                 errorGeneratingImage: response.data.error,
             });
+            this.props.setGeneratedImage(response.data.data);
         }
     }
 
     saveGeneratedImage = () => {
         // Grab the generated image from state
-        const generatedImage = this.state.generatedImage;
+        const generatedImage = this.props.generatedImage;
         // If the generated image does not exist, exit
         if (!generatedImage) return;
         // Else, save the generated image to the user's computer by
@@ -159,16 +161,16 @@ class MosaicPage extends Component {
                     <div
                         className={css(styles.pictureDiv)}
                         style={{
-                            border: this.state.imgContent || this.state.generatedImage
+                            border: this.props.uploadedImageContent || this.props.generatedImage
                                 ? null
                                 : '2px solid black',
-                            background: this.state.imgContent || this.state.generatedImage
+                            background: this.props.uploadedImageContent || this.props.generatedImage
                                 ? null
                                 : 'white',
-                            backgroundImage: this.state.generatedImage
-                                ? 'url(' + this.state.generatedImage +')'
-                                : this.state.imgContent
-                                ? 'url(' + this.state.imgContent + ')'
+                            backgroundImage: this.props.generatedImage
+                                ? 'url(' + this.props.generatedImage +')'
+                                : this.props.uploadedImageContent
+                                ? 'url(' + this.props.uploadedImageContent + ')'
                                 : null,
                         }}
                         onClick={() => this.saveGeneratedImage()}
@@ -197,13 +199,13 @@ class MosaicPage extends Component {
                             className={css(styles.hoveredImageArea)}
                             style={{
                                 backgroundColor: 'rgba(0, 0, 0, 0.75)',
-                                opacity: this.state.hoveringImageArea && this.state.generatedImage
+                                opacity: this.state.hoveringImageArea && this.props.generatedImage
                                     ? '1.0'
                                     : '0.0'
                             }}
                         >
                             {
-                                this.state.hoveringImageArea && this.state.generatedImage
+                                this.state.hoveringImageArea && this.props.generatedImage
                                     ? (
                                         <>
                                             <Typography
@@ -422,11 +424,16 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
+        uploadedImageFile: mosaicUploadedImageFileSelector(state),
+        uploadedImageContent: mosaicUploadedImageContentSelector(state),
+        generatedImage: mosaicGeneratedImageSelector(state),
     };
 };
 
 const mapDispatchToProps = {
     generateImage,
+    setGeneratedImage,
+    setUploadedImage,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MosaicPage);

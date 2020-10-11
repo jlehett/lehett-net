@@ -4,6 +4,9 @@ const initialState = {
     numImages: 50,
     tilingImageScale: 30,
     outputImageScale: 1.0,
+    uploadedImageFile: null,
+    uploadedImageContent: null,
+    generatedImage: null,
 };
 
 export default function(state = initialState, action) {
@@ -22,6 +25,17 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 outputImageScale: action.outputImageScale
+            };
+        case types.MOSAIC_SET_UPLOADED_IMAGE:
+            return {
+                ...state,
+                uploadedImageFile: action.uploadedImageFile,
+                uploadedImageContent: action.uploadedImageContent,
+            };
+        case types.MOSAIC_SET_GENERATED_IMAGE:
+            return {
+                ...state,
+                generatedImage: action.generatedImage
             };
         default:
             return state;
