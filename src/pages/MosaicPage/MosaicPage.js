@@ -10,6 +10,11 @@ import {
     TextField,
     Button,
     IconButton,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
 } from '@material-ui/core';
 import { Settings, Error, GetApp } from '@material-ui/icons';
 import { generateImage } from '../../data/state/mosaic/mosaic.actions';
@@ -27,6 +32,7 @@ class MosaicPage extends Component {
         generatedImage: '',
         generatingImage: false,
         hoveringImageArea: false,
+        errorGeneratingImage: false,
     };
 
     acceptedFiletypes = ['image/png', 'image/jpg', 'image/jpeg'];
@@ -44,6 +50,7 @@ class MosaicPage extends Component {
                 imgFile: '',
                 filetypeError: false,
                 generatedImage: '',
+                errorGeneratingImage: false,
             });
             if (!this.acceptedFiletypes.includes(file.type)) {
                 this.setState({
@@ -74,7 +81,8 @@ class MosaicPage extends Component {
             // We should generate the desired image
             this.setState({
                 generatingImage: true,
-                generatedImage: ''
+                generatedImage: '',
+                errorGeneratingImage: false,
             });
 
             const response = await this.props.generateImage(
@@ -84,7 +92,8 @@ class MosaicPage extends Component {
 
             this.setState({
                 generatingImage: false,
-                generatedImage: response.data.data
+                generatedImage: response.data.data,
+                errorGeneratingImage: response.error,
             });
         }
     }
@@ -101,6 +110,31 @@ class MosaicPage extends Component {
         link.setAttribute('href', generatedImage);
         link.setAttribute('download', 'generated_mosaic.png')
         link.click();
+    }
+
+    renderDialog = () => {
+        return (
+            <Dialog
+                open={this.state.errorGeneratingImage}
+                onClose={this.setState({ errorGeneratingImage: false })}
+            >
+                <DialogTitle>
+                    Error Generating Image
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        We had a problem while attempting to generate your
+                        mosaic. If you have scaled the image up in the
+                        settings, try scaling it back down a little bit.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => this.setState({ errorGeneratingImage: false })}>
+                        OK
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        );
     }
 
     render() {
@@ -257,6 +291,7 @@ class MosaicPage extends Component {
                         </Link>
                     </div>
                 </div>
+                { this.renderDialog() }
             </ThemeProvider>
         );
     }

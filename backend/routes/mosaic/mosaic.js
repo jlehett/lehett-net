@@ -41,14 +41,15 @@ router.post('/generate-mosaic/', function(req, res, next) {
             ]
         );
         ls.on('close', () => {
+            let error = false;
             if (ls.exitCode) {
-                console.log(ls.exitCode);
+                error = true;
             }
             base64Img.base64(
                 path.join(__dirname, '../../', rootFilepath, '/output.png'),
                 function(err, data) {
                     res.json({
-                        error: !!err,
+                        error: !!error || !!err,
                         data,
                     });
                     rimraf(rootFilepath, (err) => {
