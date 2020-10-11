@@ -1,9 +1,8 @@
 import React from 'react';
 import{ Redirect, Route, Switch } from 'react-router-dom';
-import { ThemeProvider } from '@material-ui/core/styles';
 import HomePage from '../pages/HomePage/HomePage';
-import { HomeTheme } from '../themes/home-theme';
 import MosaicPage from '../pages/MosaicPage/MosaicPage';
+import MosaicSettings from '../pages/MosaicPage/MosaicSettings'
 
 export default (
     <Switch>
@@ -16,6 +15,11 @@ export default (
             exact
             path='/mosaic'
             component={MosaicPage}
+        />
+        <Route
+            exact
+            path='/mosaic/settings'
+            component={MosaicSettings}
         />
     </Switch>
 );

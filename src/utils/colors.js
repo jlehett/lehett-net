@@ -11,6 +11,7 @@ export const HomeColors = {
 export const MyMosaicColors = {
 
     PRIMARY_RED: '#ff4949',
+    PRIMARY_RED_HOVER: '#e03434',
     PRIMARY_BLUE: '#65b5ff',
     PRIMARY_BLUE_HOVER: '#4894db',
     GRAY_BACKGROUND: '#eeeeee',

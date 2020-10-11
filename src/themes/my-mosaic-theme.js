@@ -1,3 +1,4 @@
+import { colors } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { MyMosaicColors } from '../utils/colors';
 
@@ -115,5 +116,28 @@ export const MyMosaicTheme = createMuiTheme({
                 }
             },
         },
+        MuiSlider: {
+            root: {
+                color: MyMosaicColors.PRIMARY_BLUE,
+            },
+            track: {
+                height: '5px',
+            },
+            rail: {
+                height: '5px',
+            },
+            thumb: {
+                color: MyMosaicColors.PRIMARY_BLUE,
+                width: '15px',
+                height: '15px',
+                transition: 'transform 0.25s',
+                '&:focus, &:hover, &$active': {
+                    boxShadow: 'none',
+                },
+                '&:hover': {
+                    transform: 'scale(1.5)',
+                }
+            },
+        }
     }
 });

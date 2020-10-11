@@ -77,7 +77,10 @@ class MosaicPage extends Component {
                 generatedImage: ''
             });
 
-            const response = await this.props.generateImage(imgFile, bingSearch);
+            const response = await this.props.generateImage(
+                imgFile,
+                bingSearch,
+            );
 
             this.setState({
                 generatingImage: false,
@@ -247,9 +250,11 @@ class MosaicPage extends Component {
                                 }
                             </Typography>
                         </Button>
-                        <IconButton className={css(styles.settingsButton)}>
-                            <Settings className={css(styles.settingsIcon)}/>
-                        </IconButton>
+                        <Link to='/mosaic/settings'>
+                            <IconButton className={css(styles.settingsButton)}>
+                                <Settings className={css(styles.settingsIcon)}/>
+                            </IconButton>
+                        </Link>
                     </div>
                 </div>
             </ThemeProvider>
@@ -293,9 +298,9 @@ const styles = StyleSheet.create({
             height: '500px',
         },
         '@media (max-width: 549px)': {
-            width: '100%',
+            width: '90%',
             height: '250px',
-            marginTop: '0px',
+            marginTop: '10px',
         },
     },
     error: {
@@ -358,12 +363,11 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-
     };
 };
 
 const mapDispatchToProps = {
-    generateImage
+    generateImage,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MosaicPage);

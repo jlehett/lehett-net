@@ -33,7 +33,10 @@ router.post('/generate-mosaic/', function(req, res, next) {
                 'bin/mosaic/mosaic-generation.py',
                 req.body.bingSearch,
                 uploadedImgPath,
-                randomKey
+                randomKey,
+                req.body.numImages,
+                req.body.tilingImageScale,
+                req.body.outputImageScale,
             ]
         );
         ls.on('close', () => {
@@ -60,6 +63,9 @@ router.post('/generate-mosaic/', function(req, res, next) {
                     })
                 }
             );
+        });
+        ls.stdout.on('data', (data) => {
+            console.log(`${data}`);
         });
     });
 });
