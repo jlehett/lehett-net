@@ -68,6 +68,9 @@ router.post('/generate-mosaic/', function(req, res, next) {
         ls.stdout.on('data', (data) => {
             console.log(`${data}`);
         });
+        ls.stderr.on('data', (data) => {
+            console.log(`${data}`);
+        });
     });
 });
 

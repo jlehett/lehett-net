@@ -25,57 +25,60 @@ def createCollage(
     outputImageScale,
     IMAGE_REPO_PATH
 ):
-    # Read in image to modify
-    large_image = cv2.imread(largeImagePath)
-    # We must resize the image according to the user's specifications
-    # while also ensuring the final image is of the appropriate scale
-    # in the x and y scale
-    large_image = cv2.resize(
-        large_image,
-        (
-            int(large_image.shape[1] * outputImageScale),
-            int(large_image.shape[0] * outputImageScale)
+    try:
+        # Read in image to modify
+        large_image = cv2.imread(largeImagePath)
+        # We must resize the image according to the user's specifications
+        # while also ensuring the final image is of the appropriate scale
+        # in the x and y scale
+        large_image = cv2.resize(
+            large_image,
+            (
+                int(large_image.shape[1] * outputImageScale),
+                int(large_image.shape[0] * outputImageScale)
+            )
         )
-    )
-    tilingImages = (
-        int(large_image.shape[0] / tilingImageScale),
-        int(large_image.shape[1] / tilingImageScale)
-    )
-    large_image = large_image[
-        :tilingImages[0]*tilingImageScale,
-        :tilingImages[1]*tilingImageScale
-    ]
-    large_image = np.asarray(large_image, dtype=np.float)
+        tilingImages = (
+            int(large_image.shape[0] / tilingImageScale),
+            int(large_image.shape[1] / tilingImageScale)
+        )
+        large_image = large_image[
+            :tilingImages[0]*tilingImageScale,
+            :tilingImages[1]*tilingImageScale
+        ]
+        large_image = np.asarray(large_image, dtype=np.float)
 
-    # Search for images on bing
-    downloader.download(
-        keyword,
-        limit=numImages,
-        output_dir=IMAGE_REPO_PATH,
-        adult_filter_off=True,
-        force_replace=True,
-        timeout=60
-    )
+        # Search for images on bing
+        downloader.download(
+            keyword,
+            limit=numImages,
+            output_dir=IMAGE_REPO_PATH,
+            adult_filter_off=True,
+            force_replace=True,
+            timeout=60
+        )
 
-    # Read in images in repo
-    patt_imgs = []
-    for patt_img in os.listdir(IMAGE_REPO_PATH + '/' + keyword):
-        try:
-            filepath = IMAGE_REPO_PATH + '/' + keyword + '/' + patt_img
-            img = cv2.imread(filepath)
-            img = cv2.resize(img, (tilingImageScale, tilingImageScale))
-            img = np.asarray(img, dtype=np.float)
-            patt_imgs.append(img)
-        except:
-            pass
+        # Read in images in repo
+        patt_imgs = []
+        for patt_img in os.listdir(IMAGE_REPO_PATH + '/' + keyword):
+            try:
+                filepath = IMAGE_REPO_PATH + '/' + keyword + '/' + patt_img
+                img = cv2.imread(filepath)
+                img = cv2.resize(img, (tilingImageScale, tilingImageScale))
+                img = np.asarray(img, dtype=np.float)
+                patt_imgs.append(img)
+            except:
+                pass
 
-    # Start modifying image
-    for y in range(0, large_image.shape[0] - tilingImageScale+1, tilingImageScale):
-        for x in range(0, large_image.shape[1] - tilingImageScale+1, tilingImageScale):
-            pickBestPattern(patt_imgs, x, y, large_image, tilingImageScale)
-    
-    # Write out modified image
-    cv2.imwrite(IMAGE_REPO_PATH + '/output.png', large_image)
+        # Start modifying image
+        for y in range(0, large_image.shape[0] - tilingImageScale+1, tilingImageScale):
+            for x in range(0, large_image.shape[1] - tilingImageScale+1, tilingImageScale):
+                pickBestPattern(patt_imgs, x, y, large_image, tilingImageScale)
+        
+        # Write out modified image
+        cv2.imwrite(IMAGE_REPO_PATH + '/output.png', large_image)
+    except MemoryError:
+        print('MemoryError')
 
 
 if __name__ == '__main__':
