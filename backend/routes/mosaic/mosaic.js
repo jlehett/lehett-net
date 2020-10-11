@@ -41,6 +41,9 @@ router.post('/generate-mosaic/', function(req, res, next) {
             ]
         );
         ls.on('close', () => {
+            if (ls.exitCode) {
+                console.log(ls.exitCode);
+            }
             base64Img.base64(
                 path.join(__dirname, '../../', rootFilepath, '/output.png'),
                 function(err, data) {

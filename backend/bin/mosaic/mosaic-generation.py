@@ -78,7 +78,8 @@ def createCollage(
         # Write out modified image
         cv2.imwrite(IMAGE_REPO_PATH + '/output.png', large_image)
     except MemoryError:
-        print('MemoryError')
+        #print('MemoryError')
+        raise MemoryError
 
 
 if __name__ == '__main__':
