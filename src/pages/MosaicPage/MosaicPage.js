@@ -116,7 +116,7 @@ class MosaicPage extends Component {
         return (
             <Dialog
                 open={this.state.errorGeneratingImage}
-                onClose={this.setState({ errorGeneratingImage: false })}
+                onClose={() => this.setState({ errorGeneratingImage: false })}
             >
                 <DialogTitle>
                     Error Generating Image
