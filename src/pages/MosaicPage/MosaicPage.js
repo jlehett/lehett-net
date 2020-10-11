@@ -89,12 +89,11 @@ class MosaicPage extends Component {
                 imgFile,
                 bingSearch,
             );
-            console.log(response);
 
             this.setState({
                 generatingImage: false,
                 generatedImage: response.data.data,
-                errorGeneratingImage: response.error,
+                errorGeneratingImage: response.data.error,
             });
         }
     }
