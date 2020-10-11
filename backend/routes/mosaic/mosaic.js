@@ -24,6 +24,7 @@ const upload = multer({
 // image and the Bing search query.
 router.post('/generate-mosaic/', function(req, res, next) {
     upload(req, res, (err) => {
+        req.connection.setTimeout(60*60*1000);
         const uploadedImgPath = req.file.path;
         const randomKey = crypto.randomBytes(20).toString('hex');
         const rootFilepath = 'bin/mosaic/public/' + randomKey;
