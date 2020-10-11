@@ -257,7 +257,6 @@ class MosaicSettings extends Component {
                             variant='contained'
                             className={css(styles.button, styles.cancelButton)}
                             onClick={() => this.navigateBack()}
-                            disabled={!this.allSettingsValid()}
                         >
                             <Typography variant='h4'>
                                 Cancel
