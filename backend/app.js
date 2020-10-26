@@ -1,19 +1,23 @@
 const express = require('express');
 const http = require('http');
-const app = express();
-const server = http.createServer(app);
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
-const PORT = 80;
+
+// Create express server
+const app = express();
+const server = http.createServer(app);
 
 // Configure dotenv
 require('dotenv').config();
 
 // Import all other API's that are going to be used
-const contactMeAPI = require('./routes/home/contact-me');
-const mosaicAPI = require('./routes/mosaic/mosaic');
+const contactMeAPI = require('./routes/api/home/contact-me');
+const mosaicAPI = require('./routes/api/mosaic/mosaic');
+
+// Import all other sockets that are going to be used (they will automatically listen)
+
 
 // Set the app to use some libraries
 app.use(cors());
@@ -32,6 +36,6 @@ app.get(/^\/(?!api).*/, function(req, res) {
 });
 
 // Listen on the specified port for traffic
-app.listen(PORT, function() {
-    console.log('Server is running on Port: ' + PORT);
+app.listen(process.env.WEBSITE_PORT, function() {
+    console.log('Server is running on Port: ' + process.env.WEBSITE_PORT);
 });
