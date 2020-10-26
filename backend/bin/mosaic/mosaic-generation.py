@@ -48,14 +48,17 @@ def createCollage(
     large_image = np.asarray(large_image, dtype=np.float)
 
     # Search for images on bing
-    downloader.download(
-        keyword,
-        limit=numImages,
-        output_dir=IMAGE_REPO_PATH,
-        adult_filter_off=True,
-        force_replace=True,
-        timeout=60
-    )
+    try:
+        downloader.download(
+            keyword,
+            limit=numImages,
+            output_dir=IMAGE_REPO_PATH,
+            adult_filter_off=True,
+            force_replace=True,
+            timeout=60
+        )
+    except:
+        print('There was an issue while downloading an image.')
 
     # Read in images in repo
     patt_imgs = []
