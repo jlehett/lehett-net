@@ -46,7 +46,7 @@ router.post('/generate-mosaic/', function(req, res, next) {
                 error = true;
             }
             base64Img.base64(
-                path.join(__dirname, '../../', rootFilepath, '/output.png'),
+                path.join(__dirname, '../../../', rootFilepath, '/output.png'),
                 function(err, data) {
                     res.json({
                         error: !!error || !!err,
@@ -65,7 +65,7 @@ router.post('/generate-mosaic/', function(req, res, next) {
                         } else {
                             console.log('Deleted uploaded image...');
                         }
-                    })
+                    });
                 }
             );
         });
