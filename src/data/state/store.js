@@ -4,10 +4,9 @@ import {
     connectRouter,
     routerMiddleware,
 } from 'connected-react-router';
-import createHistory from 'history/createBrowserHistory';
 import createRootReducer from './reducer';
 
-export const history = createHistory();
+export const history = require('history').createBrowserHistory();
 
 const enhancer = compose(
     applyMiddleware(thunk),

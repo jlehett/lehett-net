@@ -138,6 +138,11 @@ export const MyMosaicTheme = createMuiTheme({
                     transform: 'scale(1.5)',
                 }
             },
+        },
+        MuiSvgIcon: {
+            root: {
+                fontSize: '2.5rem',
+            }
         }
     }
 });

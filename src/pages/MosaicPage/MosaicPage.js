@@ -28,6 +28,8 @@ import {
     mosaicUploadedImageContentSelector,
     mosaicGeneratedImageSelector,
     mosaicSearchQuerySelector,
+    mosaicEmailToSelector,
+    mosaicSendEmailSelector,
 } from '../../data/state/mosaic/mosaic.selectors';
 import Header from '../../components/my-mosaic/header';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
@@ -41,6 +43,7 @@ class MosaicPage extends Component {
         generatingImage: false,
         hoveringImageArea: false,
         errorGeneratingImage: false,
+        displaySendingEmail: false,
     };
 
     acceptedFiletypes = ['image/png', 'image/jpg', 'image/jpeg'];
@@ -76,10 +79,17 @@ class MosaicPage extends Component {
     onFileGenerate = async () => {
         const imgFile = this.props.uploadedImageFile;
         const bingSearch = this.props.searchQuery;
-        if (!imgFile) {
+        if (!imgFile || !bingSearch) {
 
-        } else if (!bingSearch) {
+        } else if (this.props.sendEmail) {
+            const response = await this.props.generateImage(
+                imgFile,
+                bingSearch,
+            );
 
+            this.setState({
+                displaySendingEmail: true,
+            });
         } else {
             // We should generate the desired image
             this.setState({
@@ -113,6 +123,45 @@ class MosaicPage extends Component {
         link.setAttribute('href', generatedImage);
         link.setAttribute('download', 'generated_mosaic.png')
         link.click();
+    }
+
+    renderSendingEmailDialog = () => {
+        return (
+            <Dialog
+                open={this.state.displaySendingEmail}
+                onClose={() => this.setState({ displaySendingEmail: false })}
+            >
+                <DialogTitle disableTypography>
+                    <Typography
+                        variant='h1'
+                        className={css(styles.dialogTitle)}
+                    >
+                        Generating Image
+                    </Typography>
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText className={css(styles.dialogText)}>
+                        We are generating your photographic mosaic, and we will send an email
+                        to <b>{this.props.emailTo}</b> when it is ready. In the meantime, feel
+                        free to set up more images to generate!
+                        <br/><br/>
+                        Generating the image can take a while. If you're not seeing the email in your inbox,
+                        be sure to check your spam folder.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        onClick={() => this.setState({ displaySendingEmail: false })}
+                        style={{
+                            color: MyMosaicColors.PRIMARY_BLUE_HOVER,
+                            fontWeight: '600',
+                        }}
+                    >
+                        OK
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        );
     }
 
     renderDialog = () => {
@@ -307,6 +356,7 @@ class MosaicPage extends Component {
                     </div>
                 </div>
                 { this.renderDialog() }
+                { this.renderSendingEmailDialog() }
             </ThemeProvider>
         );
     }
@@ -430,6 +480,8 @@ const mapStateToProps = (state) => {
         uploadedImageContent: mosaicUploadedImageContentSelector(state),
         generatedImage: mosaicGeneratedImageSelector(state),
         searchQuery: mosaicSearchQuerySelector(state),
+        emailTo: mosaicEmailToSelector(state),
+        sendEmail: mosaicSendEmailSelector(state),
     };
 };
 

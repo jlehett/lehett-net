@@ -10,7 +10,7 @@ import {
     Typography,
     TextField,
     Button,
-    IconButton,
+    Checkbox,
     Slider,
     Input,
 } from '@material-ui/core';
@@ -26,11 +26,15 @@ import {
     setNumImages,
     setTilingImageScale,
     setOutputImageScale,
+    setSendEmail,
+    setEmailTo,
 } from '../../data/state/mosaic/mosaic.actions';
 import {
     mosaicNumImagesSelector,
     mosaicTilingImageScaleSelector,
     mosaicOutputImageScaleSelector,
+    mosaicSendEmailSelector,
+    mosaicEmailToSelector,
 } from '../../data/state/mosaic/mosaic.selectors';
 
 class MosaicSettings extends Component {
@@ -38,6 +42,8 @@ class MosaicSettings extends Component {
         numImages: 0,
         tilingImageScale: 0,
         outputImageScale: 0,
+        sendEmail: false,
+        emailTo: '',
 
         numImagesValidationMessage: ' ',
         numImagesValid: true,
@@ -45,6 +51,8 @@ class MosaicSettings extends Component {
         tilingImageScaleValid: true,
         outputImageScaleValidationMessage: ' ',
         outputImageScaleValid: true,
+        emailToValidationMessage: ' ',
+        emailToValid: true,
     };
     
     componentDidMount() {
@@ -52,6 +60,8 @@ class MosaicSettings extends Component {
             numImages: this.props.mosaicNumImages,
             tilingImageScale: this.props.mosaicTilingImageScale,
             outputImageScale: this.props.mosaicOutputImageScale,
+            sendEmail: this.props.mosaicSendEmail,
+            emailTo: this.props.mosaicEmailTo,
         });
     }
 
@@ -59,6 +69,12 @@ class MosaicSettings extends Component {
         await this.props.setNumImages(this.state.numImages);
         await this.props.setTilingImageScale(this.state.tilingImageScale);
         await this.props.setOutputImageScale(this.state.outputImageScale);
+        await this.props.setSendEmail(this.state.sendEmail);
+        if (this.state.sendEmail) {
+            await this.props.setEmailTo(this.state.emailTo);
+        } else {
+            await this.props.setEmailTo('');
+        }
         this.props.history.push('/mosaic');
     }
 
@@ -71,16 +87,17 @@ class MosaicSettings extends Component {
             this.state.numImagesValid
             && this.state.tilingImageScaleValid
             && this.state.outputImageScaleValid
+            && this.state.emailToValid
         );
     }
 
     checkIfSettingValid(setting, value) {
-        const newValue = Number(value); 
+        const numberValue = Number(value); 
         if (setting === MosaicConstants.NUM_IMAGES_SETTING) {
             if (
-                newValue < MosaicConstants.MIN_NUM_IMAGES
-                || newValue > MosaicConstants.MAX_NUM_IMAGES
-                || isNaN(newValue)
+                numberValue < MosaicConstants.MIN_NUM_IMAGES
+                || numberValue > MosaicConstants.MAX_NUM_IMAGES
+                || isNaN(numberValue)
             ) {
                 this.setState({
                     numImagesValid: false,
@@ -96,9 +113,9 @@ class MosaicSettings extends Component {
         }
         if (setting === MosaicConstants.TILING_IMAGE_SCALE_SETTING) {
             if (
-                newValue < MosaicConstants.MIN_TILING_IMAGE_SCALE
-                || newValue > MosaicConstants.MAX_TILING_IMAGE_SCALE
-                || isNaN(newValue)
+                numberValue < MosaicConstants.MIN_TILING_IMAGE_SCALE
+                || numberValue > MosaicConstants.MAX_TILING_IMAGE_SCALE
+                || isNaN(numberValue)
             ) {
                 this.setState({
                     tilingImageScaleValid: false,
@@ -114,9 +131,9 @@ class MosaicSettings extends Component {
         }
         if (setting === MosaicConstants.OUTPUT_IMAGE_SCALE_SETTING) {
             if (
-                newValue < MosaicConstants.MIN_OUTPUT_IMAGE_SCALE
-                || newValue > MosaicConstants.MAX_OUTPUT_IMAGE_SCALE
-                || isNaN(newValue)
+                numberValue < MosaicConstants.MIN_OUTPUT_IMAGE_SCALE
+                || numberValue > MosaicConstants.MAX_OUTPUT_IMAGE_SCALE
+                || isNaN(numberValue)
             ) {
                 this.setState({
                     outputImageScaleValid: false,
@@ -127,6 +144,38 @@ class MosaicSettings extends Component {
                 this.setState({
                     outputImageScaleValid: true,
                     outputImageScaleValidationMessage: ' ',
+                })
+            }
+        }
+        if (setting === MosaicConstants.SEND_EMAIL_SETTING) {
+            if (
+                !value
+                || MosaicConstants.EMAIL_REGEX.test(this.state.emailTo)
+            ) {
+                this.setState({
+                    emailToValid: true,
+                    emailToValidationMessage: ' ',
+                });
+            } else {
+                this.setState({
+                    emailToValid: false,
+                    emailToValidationMessage: 'Please enter a valid email address'
+                });
+            }
+        }
+        if (setting === MosaicConstants.EMAIL_TO_SETTING) {
+            if (
+                !this.state.sendEmail
+                || MosaicConstants.EMAIL_REGEX.test(value)
+            ) {
+                this.setState({
+                    emailToValid: true,
+                    emailToValidationMessage: ' ',
+                });
+            } else {
+                this.setState({
+                    emailToValid: false,
+                    emailToValidationMessage: 'Please enter a valid email address'
                 })
             }
         }
@@ -252,6 +301,46 @@ class MosaicSettings extends Component {
                             {this.state.outputImageScaleValidationMessage}&nbsp;
                         </Typography>
                     </div>
+                    <div className={css(styles.settingContainer)}>
+                        <Typography
+                            variant='h6'
+                            className={css(styles.optionLabel)}
+                        >
+                            Email Results
+                        </Typography>
+                        <div className={css(styles.emailContainer)}>
+                            <Checkbox
+                                checked={this.state.sendEmail}
+                                onChange={(event) => {
+                                    this.checkIfSettingValid(MosaicConstants.SEND_EMAIL_SETTING, event.target.checked);
+                                    this.setState({ sendEmail: event.target.checked });
+                                }}
+                            />
+                            <ThemeProvider theme={DefaultTheme}>
+                                <TextField
+                                    variant='outlined'
+                                    className={css(styles.emailTextField)}
+                                    placeholder={'Enter the email to send the results to...'}
+                                    value={this.state.emailTo}
+                                    disabled={!this.state.sendEmail}
+                                    onChange={(event) => {
+                                        this.checkIfSettingValid(MosaicConstants.EMAIL_TO_SETTING, event.target.value);
+                                        this.setState({ emailTo: event.target.value });
+                                    }}
+                                    InputProps={{
+                                        className: css(styles.emailTextFieldInput),
+                                        style: { background: this.state.sendEmail ? 'white' : null }
+                                    }}
+                                />
+                            </ThemeProvider>
+                        </div>
+                        <Typography
+                            variant='body2'
+                            className={css(styles.validationMessage)}
+                        >
+                            {this.state.emailToValidationMessage}&nbsp;
+                        </Typography>
+                    </div>
                     <div className={css(styles.buttonDiv)}>
                         <Button
                             variant='contained'
@@ -329,6 +418,20 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width: '100%',
     },
+    emailContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        width: '100%',
+        marginTop: '10px',
+    },
+    emailTextField: {
+        width: '100%',
+    },
+    emailTextFieldInput: {
+        height: '40px',
+    },
     settingContainer: {
         display: 'flex',
         flexDirection: 'column',
@@ -348,6 +451,8 @@ const mapStateToProps = (state) => {
         mosaicNumImages: mosaicNumImagesSelector(state),
         mosaicTilingImageScale: mosaicTilingImageScaleSelector(state),
         mosaicOutputImageScale: mosaicOutputImageScaleSelector(state),
+        mosaicSendEmail: mosaicSendEmailSelector(state),
+        mosaicEmailTo: mosaicEmailToSelector(state),
     };
 };
 
@@ -355,6 +460,8 @@ const mapDispatchToProps = {
     setNumImages,
     setTilingImageScale,
     setOutputImageScale,
+    setSendEmail,
+    setEmailTo,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MosaicSettings);

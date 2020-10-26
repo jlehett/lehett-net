@@ -4,6 +4,8 @@ import {
     mosaicNumImagesSelector,
     mosaicTilingImageScaleSelector,
     mosaicOutputImageScaleSelector,
+    mosaicSendEmailSelector,
+    mosaicEmailToSelector,
 } from './mosaic.selectors';
 
 export function generateImage(img, bingSearch) {
@@ -19,6 +21,9 @@ export function generateImage(img, bingSearch) {
         formData.append('numImages', mosaicNumImagesSelector(getState()));
         formData.append('tilingImageScale', mosaicTilingImageScaleSelector(getState()));
         formData.append('outputImageScale', mosaicOutputImageScaleSelector(getState()));
+        if (mosaicSendEmailSelector(getState())) {
+            formData.append('emailTo', mosaicEmailToSelector(getState()));
+        }
         const response = await axios.post(
             '/api/mosaic/generate-mosaic/',
             formData,
@@ -43,6 +48,18 @@ export function setTilingImageScale(tilingImageScale) {
 export function setOutputImageScale(outputImageScale) {
     return async (dispatch) => {
         dispatch({ type: types.MOSAIC_SET_OUTPUT_IMAGE_SCALE, outputImageScale });
+    }
+}
+
+export function setSendEmail(sendEmail) {
+    return async (dispatch) => {
+        dispatch({ type: types.MOSAIC_SET_SEND_EMAIL, sendEmail });
+    }
+}
+
+export function setEmailTo(emailTo) {
+    return async (dispatch) => {
+        dispatch({ type: types.MOSAIC_SET_EMAIL_TO, emailTo });
     }
 }
 

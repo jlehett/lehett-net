@@ -10,6 +10,14 @@ export function mosaicOutputImageScaleSelector(state) {
     return state.mosaic.outputImageScale;
 }
 
+export function mosaicSendEmailSelector(state) {
+    return state.mosaic.sendEmail;
+}
+
+export function mosaicEmailToSelector(state) {
+    return state.mosaic.emailTo;
+}
+
 export function mosaicUploadedImageFileSelector(state) {
     return state.mosaic.uploadedImageFile;
 }
